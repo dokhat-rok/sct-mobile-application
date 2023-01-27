@@ -1,30 +1,56 @@
 Есть два способа заполучить объект класса weьview. Первый заключ;ается в использовании конструктора класса WebView, второй - в получении этого объекта из разметки приложения (предварительно его нужно поместить в разметку с помощью
-визуального редактора разметки):
-<br/>
-// Первый способ
-WebView browser = new WebView(this);
-// Второй способ
-WebView browser = (WebView) findViewByid(R.id.webview);
-После этого можно загрузить документ:
-browser.loadUrl("http://www.dkws.org.ua/");
-При желании можно загружать НТМL-код из строки:
-String html = "<htrnl><Ьody><hl>Hello</hl></body></htrnl>";
-browser.loadData(html, "text/html", "utf-8");
-д,1я настройки браузера используется класс weьsettings:
-WebSettings webSettings = webView.getSettings();
-// Блокируем картинки для экономии трафика
-webSettings.setBlockNetworkimage(true);
-// Запрещаем сохранять данные форм
-webSettings.setSaveFoпnData(false);
-// Разрешаем JavaScript
-webSettings.setJavaScriptEnaЬled(true);
-// Запрещаем сохранять пароли
-webSettings.setSavePassword(false);
-// Устанавливаем размер шрифта по умолчанию (от 1 до 72)
-webSettings.setDefaultFixedFontSize(2);
-// Устанавливаем название нашего браузера
-webSettings.setUserAgentString("My browser v 1.0");
-Подробно о методах класса weьsettings (а значит, и о параметрах браузера) вы можете прочитать в руководстве разработчика Android:
-http://developer.android.com/reference/android/webkit/WebSettings.btml
-Класс WebView тоже описан в руководстве разработчика:
-bttp://developer .android.com/reference/android/webkit/W еЬ View .Ьtml 
+визуального редактора разметки):<br/>
+// Первый способ<br/>
+WebView browser = new WebView(this);<br/>
+// Второй способ<br/>
+WebView browser = (WebView) findViewByid(R.id.webview);<br/>
+После этого можно загрузить документ:<br/>
+browser.loadUrl("http://www.dkws.org.ua/");<br/>
+При желании можно загружать НТМL-код из строки:<br/>
+String html = "<htrnl><Ьody><hl>Hello</hl></body></htrnl>";<br/>
+browser.loadData(html, "text/html", "utf-8");<br/>
+д,1я настройки браузера используется класс weьsettings:<br/>
+WebSettings webSettings = webView.getSettings();<br/>
+// Блокируем картинки для экономии трафика<br/>
+webSettings.setBlockNetworkimage(true);<br/>
+// Запрещаем сохранять данные форм<br/>
+webSettings.setSaveFoпnData(false);<br/>
+// Разрешаем JavaScript<br/>
+webSettings.setJavaScriptEnaЬled(true);<br/>
+// Запрещаем сохранять пароли<br/>
+webSettings.setSavePassword(false);<br/>
+// Устанавливаем размер шрифта по умолчанию (от 1 до 72)<br/>
+webSettings.setDefaultFixedFontSize(2);<br/>
+// Устанавливаем название нашего браузера<br/>
+webSettings.setUserAgentString("My browser v 1.0");<br/>
+Подробно о методах класса weьsettings (а значит, и о параметрах браузера) вы можете прочитать в руководстве разработчика Android:<br/>
+http://developer.android.com/reference/android/webkit/WebSettings.btml<br/>
+Класс WebView тоже описан в руководстве разработчика:<br/>
+bttp://developer .android.com/reference/android/webkit/W еЬ View .Ьtml<br/>
+
+# Глава 13
+## База данных SQLite
+### 13.1. Введение в базы данных для Android 
+В этой книге мы познакомились почти со всеми основными способами хранения
+данных на Android-ycтpoйcтвe ( см. главу 8). Осталось рассмотреть базы данных
+(БД), которые используются для хранения более сложных структур данных.<br/>
+Мы не станем здесь изучать основы баз данных и начала языка запросов SQL.
+Предполагается, что вы уже с этими темами знакомы. Если это не так, то на полках
+книжного магазина, я уверен, вы найдете много книг, способных заполнить этот
+пробел в ваших знаниях.<br/>
+В ОС Android принята система управления базами данных (СУБД) SQLite. Да, возможности SQLite относительно скромны. Но ведь и такая мощная СУБД, как
+Oracle, в мобильном телефоне ни к чему. Зато SQLite- самая быстрая СУБД для
+несложных запросов на сегодняшний день.<br/>
+На Android-ycтpoйcтвe база данных хранится в каталоге /data/data/<имя пакета>/
+dataЬases. С помощью контент-провайдера несколько приложений могут использовать одну и ту же базу данных.<br/>
+Основные этапы при работе с базой данных следующие:<br/>
+- создание и открытие базы данных;
+- создание таблицы;
+- создание Insеrt-интерфейса (используется для вставки данных);
+- создание Quеrу-интерфейса (используется для выполнения запроса, обычно для
+выборки данных);
+- закрытие базы данных.
+Далее будут продемонстрированы основные приемы при работе с базой данных:
+вставка, удаление и выборка записей.
+Если вы раньше работали с РНР и MySQL, то вас здесь не ожидают никакие неожиданности. Для всех остальных читателей постараюсь объяснить все максимально подробно. 
+
