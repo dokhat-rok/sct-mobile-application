@@ -23,5 +23,4 @@
 
 
 #UML диаграмма проекта
-![Alt text](./ProjectUml.svg)
 <img src="./ProjectUml.svg">
