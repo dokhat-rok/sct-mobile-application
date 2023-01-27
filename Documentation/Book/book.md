@@ -1,11 +1,11 @@
 Есть два способа заполучить объект класса weьview. Первый заключ;ается в использовании конструктора класса WebView, второй - в получении этого объекта из разметки приложения (предварительно его нужно поместить в разметку с помощью
 визуального редактора разметки):<br/>
-<code>
-// Первый способ<br/>
-WebView browser = new WebView(this);<br/>
-// Второй способ<br/>
-WebView browser = (WebView) findViewByid(R.id.webview);<br/>
-</code>
+```java
+// Первый способ
+WebView browser = new WebView(this);
+// Второй способ
+WebView browser = (WebView) findViewByid(R.id.webview);
+```
 После этого можно загрузить документ:<br/>
 browser.loadUrl("http://www.dkws.org.ua/");<br/>
 При желании можно загружать НТМL-код из строки:<br/>
