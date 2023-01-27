@@ -23,4 +23,4 @@
 
 
 # UML диаграмма проекта
-<img src="./ProjectUml.svg">
+<img src="./Documentation/ProjectUml.svg">
