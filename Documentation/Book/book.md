@@ -12,6 +12,7 @@ browser.loadUrl("http://www.dkws.org.ua/");<br/>
 String html = "<htrnl><Ьody><hl>Hello</hl></body></htrnl>";<br/>
 browser.loadData(html, "text/html", "utf-8");<br/>
 д,1я настройки браузера используется класс weьsettings:<br/>
+```java
 WebSettings webSettings = webView.getSettings();
 // Блокируем картинки для экономии трафика
 webSettings.setBlockNetworkimage(true);
@@ -25,6 +26,7 @@ webSettings.setSavePassword(false);
 webSettings.setDefaultFixedFontSize(2);
 // Устанавливаем название нашего браузера
 webSettings.setUserAgentString("My browser v 1.0");
+```
 Подробно о методах класса weьsettings (а значит, и о параметрах браузера) вы можете прочитать в руководстве разработчика Android:<br/>
 http://developer.android.com/reference/android/webkit/WebSettings.btml<br/>
 Класс WebView тоже описан в руководстве разработчика:<br/>
