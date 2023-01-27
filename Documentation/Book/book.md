@@ -12,19 +12,19 @@ browser.loadUrl("http://www.dkws.org.ua/");<br/>
 String html = "<htrnl><Ьody><hl>Hello</hl></body></htrnl>";<br/>
 browser.loadData(html, "text/html", "utf-8");<br/>
 д,1я настройки браузера используется класс weьsettings:<br/>
-WebSettings webSettings = webView.getSettings();<br/>
-// Блокируем картинки для экономии трафика<br/>
-webSettings.setBlockNetworkimage(true);<br/>
-// Запрещаем сохранять данные форм<br/>
-webSettings.setSaveFoпnData(false);<br/>
-// Разрешаем JavaScript<br/>
-webSettings.setJavaScriptEnaЬled(true);<br/>
-// Запрещаем сохранять пароли<br/>
-webSettings.setSavePassword(false);<br/>
-// Устанавливаем размер шрифта по умолчанию (от 1 до 72)<br/>
-webSettings.setDefaultFixedFontSize(2);<br/>
-// Устанавливаем название нашего браузера<br/>
-webSettings.setUserAgentString("My browser v 1.0");<br/>
+WebSettings webSettings = webView.getSettings();
+// Блокируем картинки для экономии трафика
+webSettings.setBlockNetworkimage(true);
+// Запрещаем сохранять данные форм
+webSettings.setSaveFoпnData(false);
+// Разрешаем JavaScript
+webSettings.setJavaScriptEnaЬled(true);
+// Запрещаем сохранять пароли
+webSettings.setSavePassword(false);
+// Устанавливаем размер шрифта по умолчанию (от 1 до 72)
+webSettings.setDefaultFixedFontSize(2);
+// Устанавливаем название нашего браузера
+webSettings.setUserAgentString("My browser v 1.0");
 Подробно о методах класса weьsettings (а значит, и о параметрах браузера) вы можете прочитать в руководстве разработчика Android:<br/>
 http://developer.android.com/reference/android/webkit/WebSettings.btml<br/>
 Класс WebView тоже описан в руководстве разработчика:<br/>
