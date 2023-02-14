@@ -1,10 +1,12 @@
-package com.sct.mobile.application;
+package com.sct.mobile.application.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+
+import com.sct.mobile.application.R;
 
 public class RegistrationActivity extends AppCompatActivity {
 

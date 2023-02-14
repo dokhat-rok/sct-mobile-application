@@ -1,10 +1,12 @@
-package com.sct.mobile.application;
+package com.sct.mobile.application.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.sct.mobile.application.R;
 
 public class AuthActivity extends AppCompatActivity {
 
