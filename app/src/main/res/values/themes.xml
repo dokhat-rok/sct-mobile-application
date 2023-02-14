@@ -2,24 +2,26 @@
     <!-- Base application theme. -->
     <style name="Theme.Sctmobileapplication" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">#006200EE</item>
-        <item name="colorPrimaryVariant">#003700B3</item>
-        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorPrimary">#1a7e90</item>
+        <item name="colorPrimaryVariant">#1a7e90</item>
+        <item name="colorOnPrimary">#1a7e90</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/teal_200</item>
-        <item name="colorSecondaryVariant">@color/teal_700</item>
-        <item name="colorOnSecondary">@color/black</item>
+        <item name="colorSecondaryVariant">@color/teal_200</item>
+        <item name="colorOnSecondary">#1a7e90</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
-    </style>
-
-    <style name="Theme.Sctmobileapplication.NoActionBar">
-        <item name="windowActionBar">false</item>
+        <item name="windowActionBar">true</item>
         <item name="windowNoTitle">true</item>
     </style>
 
-    <style name="Theme.Sctmobileapplication.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+<!--    <style name="Theme.Sctmobileapplication.NoActionBar">-->
+<!--        <item name="windowActionBar">true</item>-->
+<!--        <item name="windowNoTitle">true</item>-->
+<!--    </style>-->
 
-    <style name="Theme.Sctmobileapplication.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+<!--    <style name="Theme.Sctmobileapplication.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />-->
+
+<!--    <style name="Theme.Sctmobileapplication.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />-->
 </resources>
