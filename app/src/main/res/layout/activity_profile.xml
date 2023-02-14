@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".activity.ProfileActivity"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background_color">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5pt"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/profile_remove_button"
+                style="@android:style/Widget.DeviceDefault.Light.ImageButton"
+                android:layout_width="20pt"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="3pt"
+                android:background="@null"
+                android:src="@android:drawable/ic_menu_close_clear_cancel" />
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="#00FFFFFF"
+                android:text="Профиль"
+                android:textColor="@color/text_color"
+                android:textSize="32sp"
+                tools:ignore="MissingConstraints" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5pt"
+            android:orientation="vertical">
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/profile_input_login"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_gravity="center"
+                tools:ignore="MissingConstraints">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:hint="@string/auth_input_login"
+                    android:inputType="textWebEmailAddress"
+                    android:text="Имя"/>
+            </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/profile_input_count"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_gravity="center"
+                tools:ignore="MissingConstraints">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:hint="Количество поездок"
+                    android:inputType="number"
+                    android:text="1234"/>
+            </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/profile_input_balance"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_gravity="center"
+                tools:ignore="MissingConstraints">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:hint="Баланс"
+                    android:inputType="text"
+                    android:text="1000₽"/>
+            </com.google.android.material.textfield.TextInputLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5pt"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="7pt"
+                android:background="#00FFFFFF"
+                android:text="УПРАВЛЕНИЕ АККАУНТОМ"
+                android:textColor="@color/text_color"
+                android:textSize="16sp"
+                tools:ignore="MissingConstraints" />
+
+            <Button
+                android:id="@+id/profile_exit_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="0pt"
+                android:backgroundTint="@color/background_button_color"
+                android:text="Выйти из аккаунта"
+                android:textAlignment="viewStart"
+                android:textColor="@color/text_button_color"
+                tools:ignore="MissingConstraints" />
+
+            <Button
+                android:id="@+id/profile_delete_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAlignment="viewStart"
+                android:layout_marginTop="0pt"
+                android:backgroundTint="@color/background_button_color"
+                android:text="Удалить аккаунт"
+                android:textColor="@color/text_button_color"
+                tools:ignore="MissingConstraints" />
+        </LinearLayout>
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
