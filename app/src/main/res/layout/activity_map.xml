@@ -17,30 +17,29 @@
             android:layout_height="match_parent" />
 
         <LinearLayout
-            android:id="@+id/map_menu"
             android:layout_width="match_parent"
-            android:layout_height="30pt"
-            android:layout_alignParentBottom="true"
-            tools:ignore="MissingConstraints"
-            android:orientation="horizontal" />
-
-        <!--<Button
-            android:id="@+id/map_menu_button"
-            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:backgroundTint="@color/background_button_color"
-            android:text="Меню" />-->
+            android:layout_alignParentBottom="true"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/map_menu_filter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginBottom="10pt"
+                android:layout_marginEnd="10pt"
+                android:orientation="vertical" />
+
+            <LinearLayout
+                android:id="@+id/map_menu"
+                android:layout_width="match_parent"
+                android:layout_height="30pt"
+                tools:ignore="MissingConstraints"
+                android:orientation="horizontal" />
+        </LinearLayout>
+
 
     </RelativeLayout>
 
-    <!--<RelativeLayout
-        android:id="@+id/left_drawer"
-        android:layout_width="150dp"
-        android:layout_height="match_parent"
-        android:layout_gravity="start"
-        android:choiceMode="none"
-        android:clickable="false"
-        android:focusable="false"
-        tools:ignore="MissingConstraints"
-        />-->
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -13,4 +13,8 @@
 <!--    <color name="text_button_color">#373D43</color>-->
     <color name="text_button_color">#f1faf4</color>
     <color name="background_button_color">#e74e38</color>
+
+    <!--switch color-->
+    <color name="switch_true">@color/background_button_color</color>
+    <color name="switch_false">#E73875</color>
 </resources>

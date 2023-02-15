@@ -17,7 +17,8 @@
         android:layout_marginEnd="5pt"
         android:backgroundTint="@color/background_button_color"
         android:textColor="@color/text_button_color"
-        android:text="Профиль"/>
+        android:text="Профиль"
+        android:textSize="16sp"/>
 
     <Button
         android:id="@+id/menu_rent_button"
@@ -27,7 +28,8 @@
         android:layout_marginEnd="5pt"
         android:backgroundTint="@color/background_button_color"
         android:textColor="@color/text_button_color"
-        android:text="Поездки"/>
+        android:text="Поездки"
+        android:textSize="16sp"/>
     <Button
         android:id="@+id/menu_filter_button"
         android:layout_width="0.0dip"
@@ -35,6 +37,7 @@
         android:layout_weight="1.0"
         android:backgroundTint="@color/background_button_color"
         android:textColor="@color/text_button_color"
-        android:text="Фильтр"/>
+        android:text="Фильтры"
+        android:textSize="16sp"/>
 
 </LinearLayout>
