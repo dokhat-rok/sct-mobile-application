@@ -1,6 +1,5 @@
 package com.sct.mobile.application.activity;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -13,21 +12,17 @@ import android.widget.Toast;
 import com.google.android.material.textfield.TextInputLayout;
 import com.sct.mobile.application.R;
 import com.sct.mobile.application.animation.EmptyInputAnimation;
-import com.sct.mobile.application.client.AuthApi;
-import com.sct.mobile.application.config.NetworkService;
+import com.sct.mobile.application.component.observed.impl.RegistrationObservedImpl;
+import com.sct.mobile.application.component.subscriber.RegistrationSubscriber;
 import com.sct.mobile.application.model.dto.UserDto;
 
 import java.util.Objects;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+public class RegistrationActivity extends AppCompatActivity implements RegistrationSubscriber {
 
-public class RegistrationActivity extends AppCompatActivity {
+    private RegistrationObservedImpl registrationObserved;
 
     private Toast toastReg;
-
-    private final AuthApi authApi = NetworkService.getInstance().getAuthApi();
 
     private Button regButton;
 
@@ -36,11 +31,14 @@ public class RegistrationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration);
         regButton = this.findViewById(R.id.reg_reg_button);
-        regButton.setOnClickListener(this::onClick);
+        regButton.setOnClickListener(this::onClickAccept);
+        this.findViewById(R.id.reg_cancel_button).setOnClickListener(this::onClickCancel);
         toastReg = new Toast(this.getBaseContext());
+        registrationObserved = new RegistrationObservedImpl();
+        registrationObserved.subscribeRegistration(this);
     }
 
-    public void onClick(View view){
+    public void onClickAccept(View view){
         regButton.setClickable(false);
         EditText loginEditText = Objects.requireNonNull(((TextInputLayout) this
                         .findViewById(R.id.reg_input_login))
@@ -79,33 +77,24 @@ public class RegistrationActivity extends AppCompatActivity {
             return;
         }
 
-        authApi.registration(
-                loginEditText.getText().toString(),
+        registrationObserved.registration(loginEditText.getText().toString(),
                 passEditText.getText().toString(),
-                confPassEditText.getText().toString()).enqueue(new Callback<>() {
-            @Override
-            public void onResponse(
-                    @NonNull Call<UserDto> call,
-                    @NonNull Response<UserDto> response) {
-                RegistrationActivity.this.confirmRegistration(response.body());
-            }
-
-            @Override
-            public void onFailure(@NonNull Call<UserDto> call, @NonNull Throwable t) {
-                t.printStackTrace();
-                RegistrationActivity.this.failureRegistration();
-            }
-        });
+                confPassEditText.getText().toString());
     }
 
-    private void confirmRegistration(UserDto user){
-        if(user == null) return;
+    public void onClickCancel(View view){
+        this.startActivity(new Intent(RegistrationActivity.this, AuthActivity.class));
+    }
 
+    @Override
+    public void acceptRegistration(UserDto user) {
+        regButton.setClickable(true);
         this.notification(user.getLogin() + ", регистрация выполнена успешна");
         this.startActivity(new Intent(RegistrationActivity.this, AuthActivity.class));
     }
 
-    private void failureRegistration(){
+    @Override
+    public void errorRegistration(String error) {
         this.notification("Регистрация не получилась. Попробуйте ещё раз");
         regButton.setClickable(true);
     }
@@ -113,5 +102,11 @@ public class RegistrationActivity extends AppCompatActivity {
     private void notification(String text){
         toastReg.setText(text);
         toastReg.show();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        registrationObserved.unSubscribeRegistration();
     }
 }
