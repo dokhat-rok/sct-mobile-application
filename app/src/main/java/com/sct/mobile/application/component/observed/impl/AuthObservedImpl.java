@@ -3,6 +3,7 @@ package com.sct.mobile.application.component.observed.impl;
 
 import androidx.annotation.NonNull;
 
+import com.sct.mobile.application.component.observed.AuthObserved;
 import com.sct.mobile.application.component.subscriber.AuthSubscriber;
 import com.sct.mobile.application.client.AuthApi;
 import com.sct.mobile.application.config.NetworkService;
@@ -12,7 +13,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class AuthObservedImpl implements com.sct.mobile.application.component.observed.AuthObserved {
+public class AuthObservedImpl implements AuthObserved {
 
     private final AuthApi authApi = NetworkService.getInstance().getAuthApi();
 
@@ -24,11 +25,9 @@ public class AuthObservedImpl implements com.sct.mobile.application.component.ob
     }
 
     @Override
-    public void unSubscribeAuth(AuthSubscriber subscriber){
-        this.subscriber = subscriber;
+    public void unSubscribeAuth(){
+        this.subscriber = null;
     }
-
-
 
     public void auth(String login, String password){
         authApi.authorization(login, password).enqueue(new Callback<>() {

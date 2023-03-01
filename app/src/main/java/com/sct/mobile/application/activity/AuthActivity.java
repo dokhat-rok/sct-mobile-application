@@ -24,7 +24,7 @@ public class AuthActivity extends AppCompatActivity implements AuthSubscriber {
 
     private Button entryButton;
 
-    private AuthObservedImpl authService;
+    private AuthObservedImpl authObserved;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +35,7 @@ public class AuthActivity extends AppCompatActivity implements AuthSubscriber {
         entryButton.setOnClickListener(this::clickOnEntry);
         toastEntry = new Toast(this.getBaseContext());
 
-        authService = new AuthObservedImpl();
+        authObserved = new AuthObservedImpl();
     }
 
 
@@ -62,8 +62,9 @@ public class AuthActivity extends AppCompatActivity implements AuthSubscriber {
             entryButton.setClickable(true);
             return;
         }
-        authService.subscribeAuth(this);
-        authService.auth(loginEditText.getText().toString(), passwordEditText.getText().toString());
+        authObserved.subscribeAuth(this);
+        authObserved.auth(loginEditText.getText().toString(),
+                passwordEditText.getText().toString());
     }
 
     public void clickOnReg(View view){
@@ -91,6 +92,6 @@ public class AuthActivity extends AppCompatActivity implements AuthSubscriber {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        authService.unSubscribeAuth(this);
+        authObserved.unSubscribeAuth();
     }
 }

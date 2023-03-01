@@ -6,5 +6,5 @@ public interface AuthObserved {
 
     void subscribeAuth(AuthSubscriber subscriber);
 
-    void unSubscribeAuth(AuthSubscriber subscriber);
+    void unSubscribeAuth();
 }

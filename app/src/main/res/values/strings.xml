@@ -7,6 +7,8 @@
     <string name="auth_input_password">Пароль</string>
     <string name="auth_entry_button">Вход</string>
     <string name="auth_reg_button">Регистрация</string>
+    <string name="reg_reg_button">Подвтердить</string>
+    <string name="reg_cancel_button">Отмена</string>
     <string name="registration">Регистрация</string>
     <string name="reg_input_confirm_password">Подтвердите пароль</string>
 </resources>
