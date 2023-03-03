@@ -91,6 +91,7 @@ public class RegistrationActivity extends AppCompatActivity implements Registrat
         regButton.setClickable(true);
         this.notification(user.getLogin() + ", регистрация выполнена успешна");
         this.startActivity(new Intent(RegistrationActivity.this, AuthActivity.class));
+        this.finish();
     }
 
     @Override

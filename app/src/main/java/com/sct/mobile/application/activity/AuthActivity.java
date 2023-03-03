@@ -15,6 +15,7 @@ import com.sct.mobile.application.animation.EmptyInputAnimation;
 import com.sct.mobile.application.component.subscriber.AuthSubscriber;
 import com.sct.mobile.application.model.dto.JwtDto;
 import com.sct.mobile.application.component.observed.impl.AuthObservedImpl;
+import com.sct.mobile.application.service.TokenService;
 
 import java.util.Objects;
 
@@ -63,7 +64,7 @@ public class AuthActivity extends AppCompatActivity implements AuthSubscriber {
             return;
         }
         authObserved.subscribeAuth(this);
-        authObserved.auth(loginEditText.getText().toString(),
+        authObserved.authorization(loginEditText.getText().toString(),
                 passwordEditText.getText().toString());
     }
 
@@ -72,14 +73,17 @@ public class AuthActivity extends AppCompatActivity implements AuthSubscriber {
     }
 
     @Override
-    public void accept(JwtDto token) {
-        this.notification("Авторизация выполнена");
+    public void acceptAuth(JwtDto jwt) {
+        TokenService.setJwt(jwt);
         entryButton.setClickable(true);
+
+        this.notification("Авторизация выполнена");
         this.startActivity(new Intent(AuthActivity.this, MapActivity.class));
+        this.finish();
     }
 
     @Override
-    public void error(String error) {
+    public void errorAuth(String error) {
         this.notification("Ошибка авторизации");
         entryButton.setClickable(true);
     }

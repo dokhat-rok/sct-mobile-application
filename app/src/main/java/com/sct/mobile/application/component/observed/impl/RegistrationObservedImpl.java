@@ -5,7 +5,7 @@ import androidx.annotation.NonNull;
 import com.sct.mobile.application.client.AuthApi;
 import com.sct.mobile.application.component.observed.RegistrationObserved;
 import com.sct.mobile.application.component.subscriber.RegistrationSubscriber;
-import com.sct.mobile.application.config.NetworkService;
+import com.sct.mobile.application.service.NetworkService;
 import com.sct.mobile.application.model.dto.UserDto;
 
 import retrofit2.Call;
@@ -35,7 +35,8 @@ public class RegistrationObservedImpl implements RegistrationObserved {
                     @NonNull Call<UserDto> call,
                     @NonNull Response<UserDto> response) {
                 UserDto user = response.body();
-                if(user == null) subscriber.errorRegistration("Ошибка регистрации");
+                if(response.code() != 200) subscriber.errorRegistration(response.message());
+                else if(user == null) subscriber.errorRegistration("Ошибка регистрации");
                 else subscriber.acceptRegistration(response.body());
             }
 

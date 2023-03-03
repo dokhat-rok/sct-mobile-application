@@ -11,4 +11,5 @@
     <string name="reg_cancel_button">Отмена</string>
     <string name="registration">Регистрация</string>
     <string name="reg_input_confirm_password">Подтвердите пароль</string>
+    <string name="loading">Загружаем настроение...</string>
 </resources>
