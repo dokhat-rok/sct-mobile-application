@@ -18,4 +18,10 @@ public interface AuthApi {
 
     @GET("/sct_front_auth_war/mobile/auth")
     Call<JwtDto> authorization(@Query("login") String login, @Query("password") String password);
+
+    @GET("/sct_front_auth_war/jwt")
+    Call<JwtDto> authentication();
+
+    @GET("/sct_front_auth_war/mobile/logout")
+    Call<Void> logout();
 }

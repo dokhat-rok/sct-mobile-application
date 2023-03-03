@@ -6,7 +6,9 @@ import androidx.annotation.NonNull;
 import com.sct.mobile.application.component.observed.AuthObserved;
 import com.sct.mobile.application.component.subscriber.AuthSubscriber;
 import com.sct.mobile.application.client.AuthApi;
-import com.sct.mobile.application.config.NetworkService;
+import com.sct.mobile.application.data.SharedDataUtil;
+import com.sct.mobile.application.model.enums.SharedName;
+import com.sct.mobile.application.service.NetworkService;
 import com.sct.mobile.application.model.dto.JwtDto;
 
 import retrofit2.Call;
@@ -29,27 +31,56 @@ public class AuthObservedImpl implements AuthObserved {
         this.subscriber = null;
     }
 
-    public void auth(String login, String password){
+    public void authorization(String login, String password){
         authApi.authorization(login, password).enqueue(new Callback<>() {
             @Override
             public void onResponse(@NonNull Call<JwtDto> call, @NonNull Response<JwtDto> response) {
-                JwtDto jwt = response.body();
-                if (jwt == null){
-                    subscriber.error("Ошибка авторизации");
+                if(response.code() != 200){
+                    error(response.message());
+                    return;
                 }
-                else if(jwt.getToken() == null){
-                    subscriber.error("Ошибка авторизации");
-                }
-                else {
-                    subscriber.accept(response.body());
-                }
+                SharedDataUtil.setString(SharedName.LOGIN.getLabel(), login);
+                SharedDataUtil.setString(SharedName.PASSWORD.getLabel(), password);
+                ok(response.body());
             }
 
             @Override
             public void onFailure(@NonNull Call<JwtDto> call, @NonNull Throwable t) {
-                t.printStackTrace();
-                subscriber.error(t.getMessage());
+                error(t);
             }
         });
+    }
+
+    public void authentication(){
+        authApi.authentication().enqueue(new Callback<>() {
+            @Override
+            public void onResponse(@NonNull Call<JwtDto> call, @NonNull Response<JwtDto> response) {
+                if(SharedDataUtil.getString(SharedName.COOKIE.getLabel()).equals("")){
+                    SharedDataUtil.setString(
+                            SharedName.COOKIE.getLabel(),
+                            response.headers().get("Set-Cookie"));
+                }
+                if(response.code() != 200) error(response.message());
+                else ok(response.body());
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<JwtDto> call, @NonNull Throwable t) {
+                error(t);
+            }
+        });
+    }
+
+    private void ok(JwtDto jwt){
+        subscriber.acceptAuth(jwt);
+    }
+
+    private void error(Throwable t){
+        t.printStackTrace();
+        subscriber.errorAuth(t.getMessage());
+    }
+
+    private void error(String message){
+        subscriber.errorAuth(message);
     }
 }

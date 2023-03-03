@@ -4,7 +4,7 @@ import com.sct.mobile.application.model.dto.JwtDto;
 
 public interface AuthSubscriber {
 
-    void accept(JwtDto token);
+    void acceptAuth(JwtDto token);
 
-    void error(String error);
+    void errorAuth(String error);
 }
