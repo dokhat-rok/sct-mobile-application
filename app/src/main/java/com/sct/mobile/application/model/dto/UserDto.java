@@ -30,4 +30,8 @@ public class UserDto {
     @SerializedName("role")
     @Expose
     private Role role;
+
+    @SerializedName("tripCount")
+    @Expose
+    private Long tripCount;
 }

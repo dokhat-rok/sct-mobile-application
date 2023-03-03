@@ -81,10 +81,12 @@ public class MapActivity extends AppCompatActivity {
 
     public void onProfileCLick(View view){
         this.startActivity(new Intent(MapActivity.this, ProfileActivity.class));
+        this.finish();
     }
 
     public void onRentClick(View view){
         this.startActivity(new Intent(MapActivity.this, RentActivity.class));
+        this.finish();
     }
 
     public void onFilterClick(View view){
