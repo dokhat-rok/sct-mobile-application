@@ -8,6 +8,6 @@ import retrofit2.http.Header;
 
 public interface UserApi {
 
-    @GET("/api/customer/current")
+    @GET("/api/v1/customer/current")
     Call<UserDto> getCurrent(@Header("Authorization") String token);
 }

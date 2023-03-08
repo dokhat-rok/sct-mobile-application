@@ -67,7 +67,7 @@ public class LoadingActivity extends AppCompatActivity
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-        });
+        }).start();
     }
 
     @Override
