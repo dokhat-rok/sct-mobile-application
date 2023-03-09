@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="5pt"
+    android:background="@color/background_button_color">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/rent_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:layout_weight="1"
+            android:cursorVisible="false"
+            android:focusableInTouchMode="false"
+            android:textColor="@color/text_color"
+            android:text="9 Марта 2023, 14:23"
+            android:inputType="date" />
+        <EditText
+            android:id="@+id/rent_amount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:cursorVisible="false"
+            android:focusableInTouchMode="false"
+            android:textColor="@color/text_color"
+            android:layout_marginEnd="10pt"
+            android:gravity="end"
+            android:text="250 ₽"
+            android:background="@android:color/transparent"
+            android:inputType="text" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5pt">
+
+        <EditText
+            android:id="@+id/rent_transport"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/text_color"
+            android:background="@android:color/transparent"
+            android:layout_weight="1"
+            android:cursorVisible="false"
+            android:focusableInTouchMode="false"
+            android:text="Самокат ЭСМ-2"
+            android:inputType="text"/>
+        <ImageButton
+            android:id="@+id/rent_details_button"
+            android:layout_width="10pt"
+            android:layout_height="10pt"
+            android:tag="rent_details_button"
+            android:background="@color/background_button_color"
+            android:src="@drawable/arrowrightsmall" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5pt">
+
+        <EditText
+            android:id="@+id/rent_distance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:textColor="@color/text_color"
+            android:cursorVisible="false"
+            android:focusableInTouchMode="false"
+            android:text="10 км"
+            android:inputType="text"/>
+        <EditText
+            android:id="@+id/rent_time"
+            android:layout_marginStart="5pt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:textColor="@color/text_color"
+            android:cursorVisible="false"
+            android:focusableInTouchMode="false"
+            android:text="00:34"
+            android:inputType="time" />
+    </LinearLayout>
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_marginTop="5pt"
+        android:layout_height="2dp"
+        android:background="?android:attr/listDivider" />
+
+</LinearLayout>
