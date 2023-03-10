@@ -17,7 +17,7 @@ public class RentView {
 
     private String transport;
 
-    private String rentLength;
+    private String distance;
 
-    private String rentTime;
+    private String time;
 }

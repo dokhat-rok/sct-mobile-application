@@ -2,6 +2,9 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:clickable="true"
+    android:focusable="true"
+    android:descendantFocusability="blocksDescendants"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
@@ -10,90 +13,86 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:padding="5pt"
-        android:background="@color/background_button_color"
+        android:background="#1F9BB1"
         tools:ignore="MissingConstraints">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <EditText
+            <TextView
                 android:id="@+id/rent_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@android:color/transparent"
                 android:layout_weight="1"
-                android:cursorVisible="false"
-                android:focusableInTouchMode="false"
+                android:textSize="18sp"
                 android:textColor="@color/text_color"
-                android:text="9 Марта 2023, 14:23"
-                android:inputType="date" />
-            <EditText
+                android:text="9 Марта 2023, 14:23" />
+            <TextView
                 android:id="@+id/rent_amount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:cursorVisible="false"
-                android:focusableInTouchMode="false"
                 android:textColor="@color/text_color"
                 android:layout_marginEnd="10pt"
+                android:textSize="18sp"
                 android:gravity="end"
                 android:text="250 ₽"
-                android:background="@android:color/transparent"
-                android:inputType="text" />
+                android:background="@android:color/transparent"/>
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:clickable="false"
+            android:focusable="false"
             android:layout_marginTop="5pt">
 
-            <EditText
+            <TextView
                 android:id="@+id/rent_transport"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/text_color"
                 android:background="@android:color/transparent"
                 android:layout_weight="1"
-                android:cursorVisible="false"
+                android:textSize="18sp"
                 android:focusableInTouchMode="false"
-                android:text="Самокат ЭСМ-2"
-                android:inputType="text"/>
-            <ImageButton
-                android:id="@+id/rent_details_button"
+                android:clickable="false"
+                android:focusable="false"
+                android:enabled="false"
+                android:text="Самокат ЭСМ-2"/>
+
+            <ImageView
                 android:layout_width="10pt"
                 android:layout_height="10pt"
-                android:tag="rent_details_button"
-                android:background="@color/background_button_color"
-                android:src="@drawable/arrowrightsmall" />
+                android:src="@drawable/arrowright" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:clickable="false"
+            android:focusable="false"
             android:layout_marginTop="5pt">
 
-            <EditText
+            <TextView
                 android:id="@+id/rent_distance"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@android:color/transparent"
                 android:textColor="@color/text_color"
-                android:cursorVisible="false"
-                android:focusableInTouchMode="false"
-                android:text="10 км"
-                android:inputType="text"/>
-            <EditText
+                android:textSize="18sp"
+                android:text="10 км"/>
+            <TextView
                 android:id="@+id/rent_time"
                 android:layout_marginStart="5pt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@android:color/transparent"
                 android:textColor="@color/text_color"
-                android:cursorVisible="false"
-                android:focusableInTouchMode="false"
-                android:text="00:34"
-                android:inputType="time" />
+                android:textSize="18sp"
+                android:text="00:34"/>
         </LinearLayout>
 
         <View
