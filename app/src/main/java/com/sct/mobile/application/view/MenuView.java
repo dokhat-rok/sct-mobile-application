@@ -13,10 +13,10 @@ public class MenuView extends LinearLayout {
 
     public MenuView(Context context, LinearLayout parent) {
         super(context);
-        initView(context, parent);
+        this.initView(context, parent);
     }
 
-    public void initView(final Context context,LinearLayout parent){
-        LayoutInflater.from(context).inflate(R.layout.view_menu,parent,true);
+    private void initView(Context context, LinearLayout parent) {
+        LayoutInflater.from(context).inflate(R.layout.view_menu, parent, true);
     }
 }

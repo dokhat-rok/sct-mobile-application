@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:clickable="true"
+    android:focusable="true"
+    android:descendantFocusability="blocksDescendants"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="5pt"
+        android:background="#1F9BB1"
+        tools:ignore="MissingConstraints">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/rent_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:layout_weight="1"
+                android:textSize="18sp"
+                android:textColor="@color/text_color"
+                android:text="9 Марта 2023, 14:23" />
+            <TextView
+                android:id="@+id/rent_amount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textColor="@color/text_color"
+                android:layout_marginEnd="10pt"
+                android:textSize="18sp"
+                android:gravity="end"
+                android:text="250 ₽"
+                android:background="@android:color/transparent"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clickable="false"
+            android:focusable="false"
+            android:layout_marginTop="5pt">
+
+            <TextView
+                android:id="@+id/rent_transport"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/text_color"
+                android:background="@android:color/transparent"
+                android:layout_weight="1"
+                android:textSize="18sp"
+                android:focusableInTouchMode="false"
+                android:clickable="false"
+                android:focusable="false"
+                android:enabled="false"
+                android:text="Самокат ЭСМ-2"/>
+
+            <ImageView
+                android:layout_width="10pt"
+                android:layout_height="10pt"
+                android:src="@drawable/arrowright" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="false"
+            android:focusable="false"
+            android:layout_marginTop="5pt">
+
+            <TextView
+                android:id="@+id/rent_distance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:textColor="@color/text_color"
+                android:textSize="18sp"
+                android:text="10 км"/>
+            <TextView
+                android:id="@+id/rent_time"
+                android:layout_marginStart="5pt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:textColor="@color/text_color"
+                android:textSize="18sp"
+                android:text="00:34"/>
+        </LinearLayout>
+
+        <View
+            android:id="@+id/divider"
+            android:layout_width="match_parent"
+            android:layout_marginTop="5pt"
+            android:layout_height="2dp"
+            android:background="?android:attr/listDivider" />
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
