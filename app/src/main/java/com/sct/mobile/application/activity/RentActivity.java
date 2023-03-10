@@ -1,24 +1,15 @@
 package com.sct.mobile.application.activity;
 
-import static android.view.View.FIND_VIEWS_WITH_CONTENT_DESCRIPTION;
-
 import androidx.annotation.LayoutRes;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
-import android.widget.ScrollView;
 import android.widget.Toast;
 
 import com.sct.mobile.application.R;
-import com.sct.mobile.application.view.RentView;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class RentActivity extends AppCompatActivity {
 
