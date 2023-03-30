@@ -1,6 +1,11 @@
 package com.sct.mobile.application.service;
 
 import com.sct.mobile.application.client.AuthApi;
+import com.sct.mobile.application.client.ParkingApi;
+import com.sct.mobile.application.client.PriceApi;
+import com.sct.mobile.application.client.RentApi;
+import com.sct.mobile.application.client.TransportApi;
+import com.sct.mobile.application.client.TripApi;
 import com.sct.mobile.application.client.UserApi;
 import com.sct.mobile.application.client.interceptor.AuthHeaderInterceptor;
 import com.sct.mobile.application.client.interceptor.SctApiHeaderInterceptor;
@@ -48,17 +53,37 @@ public class NetworkService {
     }
 
     public static NetworkService getInstance() {
-        if(instance == null) {
+        if (instance == null) {
             instance = new NetworkService();
         }
         return instance;
     }
 
-    public AuthApi getAuthApi(){
+    public AuthApi getAuthApi() {
         return authRetrofit.create(AuthApi.class);
     }
 
-    public UserApi getUserApi(){
+    public UserApi getUserApi() {
         return apiRetrofit.create(UserApi.class);
+    }
+
+    public ParkingApi getParkingApi() {
+        return apiRetrofit.create(ParkingApi.class);
+    }
+
+    public TransportApi getTransportApi() {
+        return apiRetrofit.create(TransportApi.class);
+    }
+
+    public RentApi getRentApi() {
+        return apiRetrofit.create(RentApi.class);
+    }
+
+    public TripApi getTripApi() {
+        return apiRetrofit.create(TripApi.class);
+    }
+
+    public PriceApi getPriceApe() {
+        return apiRetrofit.create(PriceApi.class);
     }
 }
