@@ -1,12 +1,12 @@
 package com.sct.mobile.application.service;
 
+import com.sct.mobile.application.component.observed.Observed;
 import com.sct.mobile.application.component.observed.impl.AuthObservedImpl;
 import com.sct.mobile.application.component.subscriber.AuthSubscriber;
 import com.sct.mobile.application.model.dto.JwtDto;
-import com.sct.mobile.application.service.observed.TokenObserved;
 import com.sct.mobile.application.service.subscriber.TokenSubscriber;
 
-public class TokenService implements AuthSubscriber, TokenObserved {
+public class TokenService implements AuthSubscriber, Observed<TokenSubscriber> {
 
     private final AuthObservedImpl authObserved;
 
@@ -16,17 +16,17 @@ public class TokenService implements AuthSubscriber, TokenObserved {
 
     private static JwtDto jwt;
 
-    private TokenService(){
+    private TokenService() {
         authObserved = new AuthObservedImpl();
-        authObserved.subscribeAuth(this);
+        authObserved.subscribe(this);
     }
 
-    public static TokenService getInstance(){
-        if(instance == null) instance = new TokenService();
+    public static TokenService getInstance() {
+        if (instance == null) instance = new TokenService();
         return instance;
     }
 
-    public static JwtDto getJwt(){
+    public static JwtDto getJwt() {
         return jwt;
     }
 
@@ -34,11 +34,11 @@ public class TokenService implements AuthSubscriber, TokenObserved {
         jwt = jwtDto;
     }
 
-    public static void deleteJwt(){
+    public static void deleteJwt() {
         jwt = null;
     }
 
-    public void authentication(){
+    public void authentication() {
         authObserved.authentication();
     }
 
@@ -54,12 +54,12 @@ public class TokenService implements AuthSubscriber, TokenObserved {
     }
 
     @Override
-    public void subscribeToken(TokenSubscriber subscriber) {
+    public void subscribe(TokenSubscriber subscriber) {
         this.subscriber = subscriber;
     }
 
     @Override
-    public void unSubscribeToken() {
+    public void unSubscribe() {
         this.subscriber = null;
     }
 }
