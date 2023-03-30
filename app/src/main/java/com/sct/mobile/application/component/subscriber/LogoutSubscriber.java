@@ -1,6 +1,6 @@
 package com.sct.mobile.application.component.subscriber;
 
-public interface LogoutSubscriber {
+public interface LogoutSubscriber extends Subscriber {
 
     void acceptLogout();
 
