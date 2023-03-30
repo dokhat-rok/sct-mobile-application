@@ -10,7 +10,11 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ParkingNameDto {
+public class ParkingForTransportDto {
+
+    @SerializedName("id")
+    @Expose
+    private Long id;
 
     @SerializedName("name")
     @Expose

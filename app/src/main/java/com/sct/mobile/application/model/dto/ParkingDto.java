@@ -21,9 +21,9 @@ public class ParkingDto {
     @Expose
     private String name;
 
-    @SerializedName("coordinated")
+    @SerializedName("coordinates")
     @Expose
-    private String coordinated;
+    private String coordinates;
 
     @SerializedName("allowedRadius")
     @Expose

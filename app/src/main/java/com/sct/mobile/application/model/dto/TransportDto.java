@@ -49,5 +49,5 @@ public class TransportDto {
 
     @SerializedName("parking")
     @Expose
-    private ParkingNameDto parking;
+    private ParkingForTransportDto parking;
 }

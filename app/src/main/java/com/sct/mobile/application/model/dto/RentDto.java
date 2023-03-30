@@ -4,7 +4,7 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.sct.mobile.application.model.enums.RentStatus;
 
-import java.sql.Timestamp;
+import java.time.ZonedDateTime;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -26,16 +26,16 @@ public class RentDto {
     private TransportDto transport;
 
     @SerializedName("customer")
-    @Expose
+    @Expose(deserialize = false)
     private UserDto user;
 
     @SerializedName("beginTimeRent")
     @Expose
-    private Timestamp beginTimeRent;
+    private String beginTimeRent;
 
     @SerializedName("endTimeRent")
     @Expose
-    private Timestamp endTimeRent;
+    private String endTimeRent;
 
     @SerializedName("beginParking")
     @Expose
