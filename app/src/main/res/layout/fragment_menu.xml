@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="bottom"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="30pt"
+        android:background="@color/background_color"
+        android:paddingLeft="4.0dip"
+        android:paddingTop="10.0dip"
+        android:paddingRight="4.0dip"
+        android:paddingBottom="1.0dip"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/menu_profile_button"
+            android:layout_width="0.0dip"
+            android:layout_height="20pt"
+            android:layout_weight="1.0"
+            android:layout_marginEnd="5pt"
+            android:backgroundTint="@color/background_button_color"
+            android:textColor="@color/text_button_color"
+            android:text="Профиль"
+            android:textSize="16sp"/>
+
+        <Button
+            android:id="@+id/menu_rent_button"
+            android:layout_width="0.0dip"
+            android:layout_height="20pt"
+            android:layout_weight="1.0"
+            android:layout_marginEnd="5pt"
+            android:backgroundTint="@color/background_button_color"
+            android:textColor="@color/text_button_color"
+            android:text="Поездки"
+            android:textSize="16sp"/>
+        <Button
+            android:id="@+id/menu_filter_button"
+            android:layout_width="0.0dip"
+            android:layout_height="20pt"
+            android:layout_weight="1.0"
+            android:backgroundTint="@color/background_button_color"
+            android:textColor="@color/text_button_color"
+            android:text="Фильтры"
+            android:textSize="16sp"/>
+    </LinearLayout>
+
+</LinearLayout>
