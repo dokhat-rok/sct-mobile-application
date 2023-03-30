@@ -2,7 +2,7 @@ package com.sct.mobile.application.component.subscriber;
 
 import com.sct.mobile.application.model.dto.UserDto;
 
-public interface UserSubscriber {
+public interface UserSubscriber extends Subscriber {
 
     void acceptCurrent(UserDto user);
 

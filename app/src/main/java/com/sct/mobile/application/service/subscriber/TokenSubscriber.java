@@ -1,6 +1,8 @@
 package com.sct.mobile.application.service.subscriber;
 
-public interface TokenSubscriber {
+import com.sct.mobile.application.component.subscriber.Subscriber;
+
+public interface TokenSubscriber extends Subscriber {
 
     void acceptToken();
 
