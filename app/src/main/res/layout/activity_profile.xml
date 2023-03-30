@@ -6,6 +6,21 @@
     android:layout_height="match_parent"
     android:background="@color/background_color">
 
+    <RelativeLayout
+        android:id="@+id/loadingPanel"
+        android:layout_width="match_parent"
+        android:layout_height="130pt"
+        android:translationZ="1pt"
+        android:gravity="center"
+        tools:ignore="MissingConstraints,UselessParent">
+
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:theme="@style/ProgressBarStyle"
+            android:indeterminate="true" />
+    </RelativeLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -37,9 +52,11 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/profile_layout_data"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="5pt"
+            android:visibility="invisible"
             android:orientation="vertical">
 
             <com.google.android.material.textfield.TextInputLayout

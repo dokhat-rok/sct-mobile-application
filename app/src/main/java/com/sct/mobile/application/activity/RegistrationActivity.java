@@ -35,7 +35,7 @@ public class RegistrationActivity extends AppCompatActivity implements Registrat
         this.findViewById(R.id.reg_cancel_button).setOnClickListener(this::onClickCancel);
         toastReg = new Toast(this.getBaseContext());
         registrationObserved = new RegistrationObservedImpl();
-        registrationObserved.subscribeRegistration(this);
+        registrationObserved.subscribe(this);
     }
 
     public void onClickAccept(View view){
@@ -91,6 +91,7 @@ public class RegistrationActivity extends AppCompatActivity implements Registrat
         regButton.setClickable(true);
         this.notification(user.getLogin() + ", регистрация выполнена успешна");
         this.startActivity(new Intent(RegistrationActivity.this, AuthActivity.class));
+        this.finish();
     }
 
     @Override
@@ -107,6 +108,6 @@ public class RegistrationActivity extends AppCompatActivity implements Registrat
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        registrationObserved.unSubscribeRegistration();
+        registrationObserved.unSubscribe();
     }
 }

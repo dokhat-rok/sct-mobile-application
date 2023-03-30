@@ -1,0 +1,44 @@
+package com.sct.mobile.application.component.observed.impl;
+
+import androidx.annotation.NonNull;
+
+import com.sct.mobile.application.client.AuthApi;
+import com.sct.mobile.application.component.observed.Observed;
+import com.sct.mobile.application.component.subscriber.LogoutSubscriber;
+import com.sct.mobile.application.service.NetworkService;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+public class LogoutObservedImpl implements Observed<LogoutSubscriber> {
+
+    private LogoutSubscriber subscriber;
+
+    private final AuthApi authApi = NetworkService.getInstance().getAuthApi();
+
+    public void logout() {
+        authApi.logout().enqueue(new Callback<>() {
+            @Override
+            public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
+                subscriber.acceptLogout();
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
+                t.printStackTrace();
+                subscriber.errorLogout(t.getMessage());
+            }
+        });
+    }
+
+    @Override
+    public void subscribe(LogoutSubscriber subscriber) {
+        this.subscriber = subscriber;
+    }
+
+    @Override
+    public void unSubscribe() {
+        this.subscriber = null;
+    }
+}

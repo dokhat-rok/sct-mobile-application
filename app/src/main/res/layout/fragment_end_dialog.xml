@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@drawable/rounded_shape"
+    android:backgroundTint="@color/background_color"
+    android:orientation="vertical"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:textSize="24sp"
+        android:textColor="@color/text_color"
+        android:layout_marginHorizontal="10pt"
+        android:layout_marginTop="10pt"
+        android:textStyle="bold"
+        android:layout_gravity="center_horizontal"
+        android:text="Завершение поездки"
+        android:layout_height="wrap_content"/>
+    <View
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="?android:attr/listDivider" />
+    <TextView
+        android:layout_width="100pt"
+        android:textSize="20sp"
+        android:textColor="@color/text_color"
+        android:layout_margin="10pt"
+        android:layout_gravity="center_horizontal"
+        android:text="Для завершения поездки кликните на значок парковки на карте"
+        android:layout_height="wrap_content"/>
+
+    <Button
+        android:id="@+id/end_dialog_close_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:textColor="@color/text_color"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="5pt"
+        android:backgroundTint="@color/background_button_color"
+        android:text="Сделаю"/>
+
+</LinearLayout>

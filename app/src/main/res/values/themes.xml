@@ -16,12 +16,10 @@
         <item name="windowNoTitle">true</item>
     </style>
 
-<!--    <style name="Theme.Sctmobileapplication.NoActionBar">-->
-<!--        <item name="windowActionBar">true</item>-->
-<!--        <item name="windowNoTitle">true</item>-->
-<!--    </style>-->
-
-<!--    <style name="Theme.Sctmobileapplication.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />-->
-
-<!--    <style name="Theme.Sctmobileapplication.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />-->
+    <style name="ProgressBarStyle">
+        <item name="colorAccent">@color/background_button_color</item>
+    </style>
+    <style name="WithoutShadowStyle" parent="android:Theme">
+        <item name="android:backgroundDimEnabled">false</item>
+    </style>
 </resources>

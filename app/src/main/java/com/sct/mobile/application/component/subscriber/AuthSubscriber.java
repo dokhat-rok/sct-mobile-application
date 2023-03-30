@@ -2,9 +2,9 @@ package com.sct.mobile.application.component.subscriber;
 
 import com.sct.mobile.application.model.dto.JwtDto;
 
-public interface AuthSubscriber {
+public interface AuthSubscriber extends Subscriber {
 
-    void accept(JwtDto token);
+    void acceptAuth(JwtDto token);
 
-    void error(String error);
+    void errorAuth(String error);
 }
