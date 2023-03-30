@@ -45,8 +45,8 @@ public class ProfileActivity extends AppCompatActivity implements UserSubscriber
         balanceEdit = ((TextInputLayout)this.findViewById(R.id.profile_input_balance)).getEditText();
         countEdit = ((TextInputLayout)this.findViewById(R.id.profile_input_count)).getEditText();
 
-        userObserved.subscribeUser(this);
-        logoutObserved.subscribeLogout(this);
+        userObserved.subscribe(this);
+        logoutObserved.subscribe(this);
         userObserved.getCurrent();
     }
 
@@ -56,6 +56,7 @@ public class ProfileActivity extends AppCompatActivity implements UserSubscriber
 
     public void onCLickRemove(View view){
         this.startActivity(new Intent(ProfileActivity.this, MapActivity.class));
+        this.finish();
     }
 
     @Override

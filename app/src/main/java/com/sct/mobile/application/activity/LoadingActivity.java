@@ -39,9 +39,9 @@ public class LoadingActivity extends AppCompatActivity
 
         SharedDataUtil.init(this.getBaseContext());
 
-        tokenService.subscribeToken(this);
-        userObserved.subscribeUser(this);
-        authObserved.subscribeAuth(this);
+        tokenService.subscribe(this);
+        userObserved.subscribe(this);
+        authObserved.subscribe(this);
         tokenService.authentication();
     }
 
@@ -63,7 +63,7 @@ public class LoadingActivity extends AppCompatActivity
         new Thread(() -> {
             try {
                 Thread.sleep(10000);
-                tokenService.authentication();
+                this.checkAuth();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -84,7 +84,7 @@ public class LoadingActivity extends AppCompatActivity
 
     @Override
     public void errorAuth(String error) {
-        this.errorToken(error);
+        this.checkAuth();
     }
 
     @Override

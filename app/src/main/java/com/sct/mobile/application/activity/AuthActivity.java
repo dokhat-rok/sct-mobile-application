@@ -63,7 +63,7 @@ public class AuthActivity extends AppCompatActivity implements AuthSubscriber {
             entryButton.setClickable(true);
             return;
         }
-        authObserved.subscribeAuth(this);
+        authObserved.subscribe(this);
         authObserved.authorization(loginEditText.getText().toString(),
                 passwordEditText.getText().toString());
     }
@@ -96,6 +96,6 @@ public class AuthActivity extends AppCompatActivity implements AuthSubscriber {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        authObserved.unSubscribeAuth();
+        authObserved.unSubscribe();
     }
 }
