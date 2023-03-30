@@ -19,4 +19,7 @@
     <style name="ProgressBarStyle">
         <item name="colorAccent">@color/background_button_color</item>
     </style>
+    <style name="WithoutShadowStyle" parent="android:Theme">
+        <item name="android:backgroundDimEnabled">false</item>
+    </style>
 </resources>
