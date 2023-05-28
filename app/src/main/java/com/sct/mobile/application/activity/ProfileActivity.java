@@ -38,7 +38,7 @@ public class ProfileActivity extends AppCompatActivity implements UserSubscriber
         this.setContentView(R.layout.activity_profile);
         this.findViewById(R.id.profile_remove_button).setOnClickListener(this::onCLickRemove);
         this.findViewById(R.id.profile_exit_button).setOnClickListener(this::onClickExit);
-        this.findViewById(R.id.profile_delete_button).setOnClickListener(this::onClickExit);
+        this.findViewById(R.id.profile_delete_button).setOnClickListener(this::onClickDelete);
         toast = new Toast(this.getBaseContext());
 
         loginEdit = ((TextInputLayout)this.findViewById(R.id.profile_input_login)).getEditText();
@@ -57,6 +57,10 @@ public class ProfileActivity extends AppCompatActivity implements UserSubscriber
     public void onCLickRemove(View view){
         this.startActivity(new Intent(ProfileActivity.this, MapActivity.class));
         this.finish();
+    }
+
+    public void onClickDelete(View view) {
+        userObserved.deleteCurrent();
     }
 
     @Override
@@ -92,6 +96,17 @@ public class ProfileActivity extends AppCompatActivity implements UserSubscriber
 
     @Override
     public void errorLogout(String error) {
+        this.notification(error);
+    }
+
+    @Override
+    public void acceptDelete() {
+        this.notification("Пользователь успешно удален");
+        logoutObserved.logout();
+    }
+
+    @Override
+    public void errorDelete(String error) {
         this.notification(error);
     }
 

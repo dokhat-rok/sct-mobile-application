@@ -37,6 +37,22 @@ public class UserObservedImpl implements Observed<UserSubscriber> {
         });
     }
 
+    public void deleteCurrent() {
+        userApi.deleteCurrent(TokenService.getJwt().getToken()).enqueue(new Callback<>() {
+            @Override
+            public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
+                if (response.code() != 200) userSubscriber.errorDelete(response.message());
+                else userSubscriber.acceptDelete();
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
+                t.printStackTrace();
+                userSubscriber.errorDelete(t.getMessage());
+            }
+        });
+    }
+
     @Override
     public void subscribe(UserSubscriber userSubscriber) {
         this.userSubscriber = userSubscriber;
