@@ -41,6 +41,9 @@ public class AuthObservedImpl implements Observed<AuthSubscriber> {
                 }
                 SharedDataUtil.setString(SharedName.LOGIN.getLabel(), login);
                 SharedDataUtil.setString(SharedName.PASSWORD.getLabel(), password);
+                SharedDataUtil.setString(
+                        SharedName.COOKIE.getLabel(),
+                        response.headers().get("Set-Cookie"));
                 ok(response.body());
             }
 

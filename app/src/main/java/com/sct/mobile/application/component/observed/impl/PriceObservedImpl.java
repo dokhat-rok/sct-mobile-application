@@ -18,7 +18,7 @@ public class PriceObservedImpl implements Observed<PriceSubscriber> {
 
     private PriceSubscriber priceSubscriber;
 
-    private final PriceApi priceApi = NetworkService.getInstance().getPriceApe();
+    private final PriceApi priceApi = NetworkService.getInstance().getPriceApi();
 
     public void getPrice(TransportType type) {
         priceApi.getPrice(TokenService.getJwt().getToken(), type).enqueue(new Callback<>() {
