@@ -12,7 +12,7 @@ public class SctApiHeaderInterceptor implements Interceptor {
     @Override
     public Response intercept(Interceptor.Chain chain) throws IOException {
         return chain.proceed(chain.request().newBuilder()
-                .addHeader("Authorization", "Bearer " + TokenService.getJwt().getToken())
+                .addHeader("Authorization", TokenService.getJwt().getToken())
                 .build());
     }
 }
