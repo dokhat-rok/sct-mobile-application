@@ -1,6 +1,7 @@
 package com.sct.mobile.application.activity;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.media.MediaPlayer;
@@ -21,7 +22,7 @@ import androidx.fragment.app.FragmentManager;
 
 import com.sct.mobile.application.R;
 import com.sct.mobile.application.component.observed.impl.ParkingObservedImpl;
-import com.sct.mobile.application.component.observed.impl.PriceObserved;
+import com.sct.mobile.application.component.observed.impl.PriceObservedImpl;
 import com.sct.mobile.application.component.observed.impl.RentObservedImpl;
 import com.sct.mobile.application.component.observed.impl.TransportObservedImpl;
 import com.sct.mobile.application.component.observed.impl.TripObservedImpl;
@@ -89,7 +90,7 @@ public class MapActivity extends AppCompatActivity implements TransportSubscribe
     private final TransportObservedImpl transportObserved = new TransportObservedImpl();
     private final ParkingObservedImpl parkingObserved = new ParkingObservedImpl();
     private final TripObservedImpl tripObserved = new TripObservedImpl();
-    private final PriceObserved priceObserved = new PriceObserved();
+    private final PriceObservedImpl priceObserved = new PriceObservedImpl();
     private final RentObservedImpl rentObserved = new RentObservedImpl();
 
     private TransportDto selectedTransport;
@@ -202,6 +203,7 @@ public class MapActivity extends AppCompatActivity implements TransportSubscribe
         this.notification(error);
     }
 
+    @SuppressLint("CommitTransaction")
     @Override
     public void acceptEndTrip(RentDto rent) {
         FinishDialog dialog = new FinishDialog(rent);
@@ -288,7 +290,7 @@ public class MapActivity extends AppCompatActivity implements TransportSubscribe
         ZonedDateTime begin = ZonedDateTime.parse(currentTripRent.getBeginTimeRent());
         Duration delta = Duration.between(begin, ZonedDateTime.now());
 
-        long seconds = delta.getSeconds() + 12;
+        long seconds = delta.getSeconds();
         long hours = seconds / 3_600;
         seconds %= 3_600;
         long minutes = seconds / 60;
@@ -515,6 +517,11 @@ public class MapActivity extends AppCompatActivity implements TransportSubscribe
             assert t != null;
             if(t.getId().equals(selectedTransport.getId())) mapObjects.remove(p);
         });
+        bicycleList.forEach(p -> {
+            TransportDto t = (TransportDto) p.getUserData();
+            assert t != null;
+            if(t.getId().equals(selectedTransport.getId())) mapObjects.remove(p);
+        });
         selectedLayout.removeAllViews();
         selectedLayout = null;
         selectedTransport = null;
@@ -524,6 +531,7 @@ public class MapActivity extends AppCompatActivity implements TransportSubscribe
         filterLayout.animate().translationYBy(animTranslationYBy).setDuration(animDuration);
     }
 
+    @SuppressLint("CommitTransaction")
     public void onEndTripClick(View view) {
         makeEnd = true;
 
