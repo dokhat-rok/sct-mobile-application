@@ -24,7 +24,8 @@ public class UserObservedImpl implements Observed<UserSubscriber> {
             @Override
             public void onResponse(
                     @NonNull Call<UserDto> call,
-                    @NonNull Response<UserDto> response) {
+                    @NonNull Response<UserDto> response
+            ) {
                 if (response.code() != 200) userSubscriber.errorUser(response.message());
                 else userSubscriber.acceptCurrent(response.body());
             }
@@ -33,6 +34,26 @@ public class UserObservedImpl implements Observed<UserSubscriber> {
             public void onFailure(@NonNull Call<UserDto> call, @NonNull Throwable t) {
                 t.printStackTrace();
                 userSubscriber.errorUser(t.getMessage());
+            }
+        });
+    }
+
+    public void additionalBalance(Long amount) {
+        userApi.additionalBalance(TokenService.getJwt().getToken(), amount)
+                .enqueue(new Callback<>() {
+            @Override
+            public void onResponse(
+                    @NonNull Call<UserDto> call,
+                    @NonNull Response<UserDto> response
+            ) {
+                if(response.code() != 200) userSubscriber.errorAdditionalBalance(response.message());
+                else userSubscriber.acceptAdditionalBalance(response.body());
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<UserDto> call, @NonNull Throwable t) {
+                t.printStackTrace();
+                userSubscriber.errorAdditionalBalance(t.getMessage());
             }
         });
     }

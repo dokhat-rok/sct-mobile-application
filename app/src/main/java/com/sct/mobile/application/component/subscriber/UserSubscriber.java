@@ -4,9 +4,13 @@ import com.sct.mobile.application.model.dto.UserDto;
 
 public interface UserSubscriber extends Subscriber {
 
-    void acceptCurrent(UserDto user);
+    default void acceptCurrent(UserDto user) {}
 
-    void errorUser(String error);
+    default void errorUser(String error) {}
+
+    default void acceptAdditionalBalance(UserDto user) {}
+
+    default void errorAdditionalBalance(String error) {}
 
     default void acceptDelete() {}
 

@@ -133,6 +133,17 @@
                 tools:ignore="MissingConstraints" />
 
             <Button
+                android:id="@+id/profile_additional_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="0pt"
+                android:backgroundTint="@color/background_button_color"
+                android:text="Пополнить баланс"
+                android:textAlignment="viewStart"
+                android:textColor="@color/text_button_color"
+                tools:ignore="MissingConstraints" />
+
+            <Button
                 android:id="@+id/profile_exit_button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -149,11 +160,18 @@
                 android:layout_height="wrap_content"
                 android:textAlignment="viewStart"
                 android:layout_marginTop="0pt"
-                android:backgroundTint="@color/background_button_color"
+                android:backgroundTint="@color/danger_background_button_color"
                 android:text="Удалить аккаунт"
                 android:textColor="@color/text_button_color"
                 tools:ignore="MissingConstraints" />
         </LinearLayout>
+        <LinearLayout
+            android:id="@+id/profile_additional_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10pt"
+            android:gravity="bottom"
+            android:orientation="vertical" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -4,17 +4,20 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.textfield.TextInputLayout;
 import com.sct.mobile.application.R;
+import com.sct.mobile.application.animation.EmptyInputAnimation;
 import com.sct.mobile.application.component.observed.impl.LogoutObservedImpl;
 import com.sct.mobile.application.component.observed.impl.UserObservedImpl;
 import com.sct.mobile.application.component.subscriber.LogoutSubscriber;
 import com.sct.mobile.application.component.subscriber.UserSubscriber;
 import com.sct.mobile.application.data.SharedDataUtil;
+import com.sct.mobile.application.fragment.AdditionalBalanceFragment;
 import com.sct.mobile.application.model.dto.UserDto;
 import com.sct.mobile.application.service.TokenService;
 
@@ -28,6 +31,8 @@ public class ProfileActivity extends AppCompatActivity implements UserSubscriber
 
     private Toast toast;
 
+    private LinearLayout additionalBalanceLayout;
+
     private final UserObservedImpl userObserved = new UserObservedImpl();
 
     private final LogoutObservedImpl logoutObserved = new LogoutObservedImpl();
@@ -37,6 +42,8 @@ public class ProfileActivity extends AppCompatActivity implements UserSubscriber
         super.onCreate(savedInstanceState);
         this.setContentView(R.layout.activity_profile);
         this.findViewById(R.id.profile_remove_button).setOnClickListener(this::onCLickRemove);
+        this.findViewById(R.id.profile_additional_button)
+                .setOnClickListener(this::initAdditionalBalanceLayout);
         this.findViewById(R.id.profile_exit_button).setOnClickListener(this::onClickExit);
         this.findViewById(R.id.profile_delete_button).setOnClickListener(this::onClickDelete);
         toast = new Toast(this.getBaseContext());
@@ -52,6 +59,35 @@ public class ProfileActivity extends AppCompatActivity implements UserSubscriber
 
     public void onClickExit(View view){
         logoutObserved.logout();
+    }
+
+    public void initAdditionalBalanceLayout(View view) {
+        if(additionalBalanceLayout == null) {
+            additionalBalanceLayout = findViewById(R.id.profile_additional_layout);
+            AdditionalBalanceFragment fragment = new AdditionalBalanceFragment(this,
+                    additionalBalanceLayout);
+            additionalBalanceLayout.addView(fragment);
+            additionalBalanceLayout.findViewById(R.id.additional_remove_button)
+                    .setOnClickListener(this::onRemoveAdditionalBalanceClick);
+            additionalBalanceLayout.findViewById(R.id.additional_accept_button)
+                    .setOnClickListener(this::onAdditionalBalanceAcceptClick);
+        }
+    }
+
+    public void onRemoveAdditionalBalanceClick(View view) {
+        this.removeAdditionalBalanceFragment();
+    }
+
+    public void onAdditionalBalanceAcceptClick(View view) {
+        EditText amountText = ((TextInputLayout) additionalBalanceLayout
+                .findViewById(R.id.additional_amount)).getEditText();
+        assert amountText != null;
+        long amount = Long.parseLong(String.valueOf(amountText.getText()));
+        if(amount > 0) userObserved.additionalBalance(amount);
+        else {
+            EmptyInputAnimation.shake(amountText);
+            notification("Сумма пополнения должна быть больше нуля");
+        }
     }
 
     public void onCLickRemove(View view){
@@ -83,6 +119,27 @@ public class ProfileActivity extends AppCompatActivity implements UserSubscriber
                e.printStackTrace();
            }
         });
+    }
+
+    @Override
+    public void acceptAdditionalBalance(UserDto user) {
+        loginEdit.setText(user.getLogin());
+        balanceEdit.setText(String.valueOf(user.getBalance()));
+        countEdit.setText(String.valueOf(user.getTripCount()));
+
+        this.notification("Баланс успешно пополнен");
+        this.removeAdditionalBalanceFragment();
+
+    }
+
+    @Override
+    public void errorAdditionalBalance(String error) {
+        UserSubscriber.super.errorAdditionalBalance(error);
+    }
+
+    private void removeAdditionalBalanceFragment() {
+        additionalBalanceLayout.removeAllViews();
+        additionalBalanceLayout = null;
     }
 
     @Override
