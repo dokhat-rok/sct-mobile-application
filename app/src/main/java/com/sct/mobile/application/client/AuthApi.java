@@ -10,13 +10,13 @@ import retrofit2.http.Query;
 
 public interface AuthApi {
 
-    @POST("/sct_front_auth_war/mobile/auth")
+    @POST("/sct_front_auth_war/auth")
     Call<UserDto> registration(
             @Query("login") String login,
             @Query("password") String password,
             @Query("confirmPassword") String confirmPass);
 
-    @GET("/sct_front_auth_war/mobile/auth")
+    @GET("/sct_front_auth_war/auth")
     Call<JwtDto> authorization(@Query("login") String login, @Query("password") String password);
 
     @GET("/sct_front_auth_war/jwt")

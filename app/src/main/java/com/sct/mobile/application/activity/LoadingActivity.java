@@ -79,7 +79,6 @@ public class LoadingActivity extends AppCompatActivity
         }
         TokenService.setJwt(jwt);
         userObserved.getCurrent();
-//        this.confirmAuth();
     }
 
     @Override
