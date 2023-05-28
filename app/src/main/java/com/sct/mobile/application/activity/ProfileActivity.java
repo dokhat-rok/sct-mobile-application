@@ -82,12 +82,16 @@ public class ProfileActivity extends AppCompatActivity implements UserSubscriber
         EditText amountText = ((TextInputLayout) additionalBalanceLayout
                 .findViewById(R.id.additional_amount)).getEditText();
         assert amountText != null;
-        long amount = Long.parseLong(String.valueOf(amountText.getText()));
+        String value = String.valueOf(amountText.getText());
+        long amount = 0;
+        if (!value.isBlank()) amount = Long.parseLong(value);
         if(amount > 0) userObserved.additionalBalance(amount);
-        else {
-            EmptyInputAnimation.shake(amountText);
-            notification("Сумма пополнения должна быть больше нуля");
-        }
+        else this.incorrectAmount(amountText);
+    }
+
+    private void incorrectAmount(EditText amountText) {
+        EmptyInputAnimation.shake(amountText);
+        notification("Сумма пополнения должна быть больше нуля");
     }
 
     public void onCLickRemove(View view){

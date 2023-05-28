@@ -19,6 +19,8 @@
             android:layout_height="wrap_content"
             android:theme="@style/ProgressBarStyle"
             android:indeterminate="true" />
+
+
     </RelativeLayout>
 
     <LinearLayout
@@ -165,13 +167,20 @@
                 android:textColor="@color/text_button_color"
                 tools:ignore="MissingConstraints" />
         </LinearLayout>
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
         <LinearLayout
             android:id="@+id/profile_additional_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10pt"
-            android:gravity="bottom"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="10pt"
             android:orientation="vertical" />
-    </LinearLayout>
+    </RelativeLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

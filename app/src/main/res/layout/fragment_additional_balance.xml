@@ -23,7 +23,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="#00FFFFFF"
-        android:text="Пополнение баланса"
+        android:text="ПОПОЛНЕНИЕ БАЛАНСА"
         android:layout_marginBottom="5pt"
         android:layout_marginHorizontal="5pt"
         android:textColor="@color/text_color"
@@ -41,8 +41,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:hint="Сумма пополнения"
-        android:inputType="number"
-        android:text="0"/>
+        android:inputType="number"/>
     </com.google.android.material.textfield.TextInputLayout>
 
     <Button
