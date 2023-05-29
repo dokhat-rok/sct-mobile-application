@@ -3,6 +3,7 @@ package com.sct.mobile.application.service;
 import com.sct.mobile.application.model.dto.RentDto;
 import com.sct.mobile.application.model.dto.RoutePointDto;
 import com.yandex.mapkit.geometry.Point;
+import com.yandex.mapkit.location.Location;
 import com.yandex.mapkit.location.LocationManagerUtils;
 
 import java.util.Objects;
@@ -44,7 +45,7 @@ public class GeoStaticService {
             public void run() {
                 sentGeo();
             }
-        }, 100L, 1000L);
+        }, 1000L, 1000L);
     }
 
     public static void stopSent() {
@@ -55,16 +56,16 @@ public class GeoStaticService {
     }
 
     private static void checkGeo() {
-        currentPoint = Objects.requireNonNull(LocationManagerUtils.getLastKnownLocation())
-                .getPosition();
+        Location location = LocationManagerUtils.getLastKnownLocation();
+        if(location != null) currentPoint = location.getPosition();
     }
 
     private static void sentGeo() {
-        Point point = currentPoint;
+        if(currentPoint == null) return;
         RoutePointDto routePoint = RoutePointDto.builder()
                 .rent(currentRent)
-                .latitude(point.getLatitude())
-                .longitude(point.getLongitude())
+                .latitude(currentPoint.getLatitude())
+                .longitude(currentPoint.getLongitude())
                 .build();
         routePointService.savePoint(routePoint);
     }

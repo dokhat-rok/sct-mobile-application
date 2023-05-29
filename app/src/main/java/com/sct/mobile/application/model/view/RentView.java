@@ -26,6 +26,4 @@ public class RentView {
     private String distance;
 
     private String time;
-
-    private List<RoutePointDto> routePoints;
 }

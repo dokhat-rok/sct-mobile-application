@@ -44,6 +44,7 @@ public class RentActivity extends AppCompatActivity implements RentSubscriber {
 
     private RelativeLayout routeLayout;
     private MapView mapView;
+    private List<RentDto> rents;
 
     private MapObjectCollection mapObjects;
 
@@ -91,6 +92,7 @@ public class RentActivity extends AppCompatActivity implements RentSubscriber {
     @Override
     public void acceptGetAllRent(List<RentDto> rentList) {
         this.findViewById(R.id.rent_loadingPanel).setVisibility(View.INVISIBLE);
+        this.rents = rentList;
         RecyclerView recyclerView = this.findViewById(R.id.rent_list);
         RentAdapter adapter = new RentAdapter(this, this.fillData(rentList));
         adapter.setRentActivity(this);
@@ -98,12 +100,21 @@ public class RentActivity extends AppCompatActivity implements RentSubscriber {
     }
 
     public void showRoute(RentView rent) {
-        if (rent.getRoutePoints().size() == 0) {
+        RentDto selected = rents.parallelStream()
+                .filter(r -> r.getId().equals(rent.getId()))
+                .findFirst().orElse(null);
+
+        if(selected == null) {
+            this.notification("Поездка не найдена");
+            return;
+        }
+        if (selected.getRoutePoints().size() == 0) {
             this.notification("Нет геометок");
             return;
         }
+
         routeLayout.setVisibility(View.VISIBLE);
-        List<Point> polylinePoints = rent.getRoutePoints().parallelStream()
+        List<Point> polylinePoints = selected.getRoutePoints().parallelStream()
                 .map(p -> new Point(p.getLatitude(), p.getLongitude()))
                 .collect(Collectors.toList());
         PolylineMapObject polyline = mapObjects.addPolyline(new Polyline(polylinePoints));
@@ -124,7 +135,7 @@ public class RentActivity extends AppCompatActivity implements RentSubscriber {
         float d = (float) Geo.distance(polylinePoints.get(0),
                 polylinePoints.get(polylinePoints.size() - 1));
         float zoom = 20;
-        while(d > 1) {
+        while (d > 1) {
             zoom -= 1;
             d /= 5;
         }
