@@ -23,11 +23,13 @@ public class RentMapper {
         ParkingDto endPark = rent.getEndParking();
         TransportDto ts = rent.getTransport();
         return RentView.builder()
+                .id(rent.getId())
                 .amount(parseAmount(rent.getAmount()))
                 .date(parseDate(beginTime))
                 .time(parseTime(beginTime, endTime))
                 .distance(parseDistance(beginPark, endPark))
                 .transport(parseTransport(ts.getType(), ts.getIdentificationNumber()))
+                .routePoints(rent.getRoutePoints())
                 .build();
     }
 
@@ -52,9 +54,11 @@ public class RentMapper {
             case DECEMBER -> "Декабрь";
         };
         int year = time.getYear();
-        int hour = time.getHour();
-        int minute = time.getMinute();
-        return String.format(Locale.ROOT, "%d %s %d, %d:%d", day, month, year, hour, minute);
+        String hour = String.valueOf(time.getHour());
+        String minute = String.valueOf(time.getMinute());
+        if(hour.length() == 1) hour = "0" + hour;
+        if(minute.length() == 1) minute = "0" + minute;
+        return String.format(Locale.ROOT, "%d %s %d, %s:%s", day, month, year, hour, minute);
     }
 
     private static String parseTransport(TransportType type, String identification) {

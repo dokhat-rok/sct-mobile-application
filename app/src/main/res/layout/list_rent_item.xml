@@ -93,6 +93,15 @@
                 android:textColor="@color/text_color"
                 android:textSize="18sp"
                 android:text="00:34"/>
+            <TextView
+                android:id="@+id/rent_id"
+                android:layout_marginStart="5pt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:textColor="@color/text_color"
+                android:visibility="invisible"
+                android:textSize="18sp"/>
         </LinearLayout>
 
         <View

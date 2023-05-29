@@ -46,11 +46,14 @@ import com.sct.mobile.application.model.dto.TripBeginDto;
 import com.sct.mobile.application.model.dto.TripEndDto;
 import com.sct.mobile.application.model.enums.RentStatus;
 import com.sct.mobile.application.model.enums.TransportType;
+import com.sct.mobile.application.service.GeoStaticService;
 import com.yandex.mapkit.Animation;
 import com.yandex.mapkit.MapKit;
 import com.yandex.mapkit.MapKitFactory;
 import com.yandex.mapkit.geometry.Point;
+import com.yandex.mapkit.location.LocationManagerUtils;
 import com.yandex.mapkit.map.CameraPosition;
+import com.yandex.mapkit.map.MapObject;
 import com.yandex.mapkit.map.MapObjectCollection;
 import com.yandex.mapkit.map.MapObjectTapListener;
 import com.yandex.mapkit.map.PlacemarkMapObject;
@@ -63,6 +66,7 @@ import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -94,6 +98,7 @@ public class MapActivity extends AppCompatActivity implements TransportSubscribe
     private final RentObservedImpl rentObserved = new RentObservedImpl();
 
     private TransportDto selectedTransport;
+    private MapObject selectedMapObject;
     private RentDto currentTripRent;
 
     private Timer getObjectsTimer;
@@ -121,7 +126,9 @@ public class MapActivity extends AppCompatActivity implements TransportSubscribe
 
 
         mapView.getMap().move(
-                new CameraPosition(new Point(47.228713, 39.715841), 15.0f, 0.0f, 0.0f),
+                new CameraPosition(Objects.requireNonNull(LocationManagerUtils
+                                .getLastKnownLocation()).getPosition(),
+                        15.0f, 0.0f, 0.0f),
                 new Animation(Animation.Type.SMOOTH, 1.0f),
                 null);
         mapObjects = mapView.getMap().getMapObjects().addCollection();
@@ -193,9 +200,11 @@ public class MapActivity extends AppCompatActivity implements TransportSubscribe
     @Override
     public void acceptBeginTrip(RentDto rent) {
         currentTripRent = rent;
+        mapObjects.remove(selectedMapObject);
         this.removeSelectLayout();
         this.initCurrentTripLayout();
         this.notification("Приятного пути!");
+        this.startGeo();
     }
 
     @Override
@@ -206,6 +215,7 @@ public class MapActivity extends AppCompatActivity implements TransportSubscribe
     @SuppressLint("CommitTransaction")
     @Override
     public void acceptEndTrip(RentDto rent) {
+        this.stopGeo();
         FinishDialog dialog = new FinishDialog(rent);
         FragmentManager manager = getSupportFragmentManager();
         manager.beginTransaction();
@@ -245,7 +255,18 @@ public class MapActivity extends AppCompatActivity implements TransportSubscribe
     public void acceptGetAllRent(List<RentDto> rentList) {
         if (rentList.size() == 0) return;
         currentTripRent = rentList.get(0);
+        this.startGeo();
         this.initCurrentTripLayout();
+    }
+
+    private void startGeo() {
+        if(GeoStaticService.isStart()) return;
+        GeoStaticService.setCurrentRent(currentTripRent);
+        GeoStaticService.startSent();
+    }
+
+    private void stopGeo() {
+        GeoStaticService.stopSent();
     }
 
     @Override
@@ -368,6 +389,7 @@ public class MapActivity extends AppCompatActivity implements TransportSubscribe
             if (data instanceof ParkingDto) this.parkingEvent((ParkingDto) data);
             else if (data instanceof TransportDto) {
                 selectedTransport = (TransportDto) mapObject.getUserData();
+                this.selectedMapObject = mapObject;
                 this.transportEvent();
             }
         }
@@ -512,19 +534,10 @@ public class MapActivity extends AppCompatActivity implements TransportSubscribe
     }
 
     private void removeSelectLayout() {
-        scooterList.forEach(p -> {
-            TransportDto t = (TransportDto) p.getUserData();
-            assert t != null;
-            if(t.getId().equals(selectedTransport.getId())) mapObjects.remove(p);
-        });
-        bicycleList.forEach(p -> {
-            TransportDto t = (TransportDto) p.getUserData();
-            assert t != null;
-            if(t.getId().equals(selectedTransport.getId())) mapObjects.remove(p);
-        });
         selectedLayout.removeAllViews();
         selectedLayout = null;
         selectedTransport = null;
+        selectedMapObject = null;
     }
 
     public void onRemoveFilterClick(View view) {

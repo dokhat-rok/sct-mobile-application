@@ -4,19 +4,19 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.sct.mobile.application.R;
+import com.sct.mobile.application.activity.RentActivity;
 import com.sct.mobile.application.model.view.RentView;
 
 import java.util.List;
 
 import lombok.Getter;
+import lombok.Setter;
 
 public class RentAdapter extends RecyclerView.Adapter<RentAdapter.RentViewHolder> {
 
@@ -24,7 +24,8 @@ public class RentAdapter extends RecyclerView.Adapter<RentAdapter.RentViewHolder
 
     private final List<RentView> rents;
 
-    private Toast toast;
+    @Setter
+    private RentActivity rentActivity;
 
     public RentAdapter(Context context, List<RentView> rents){
         this.rents = rents;
@@ -35,7 +36,6 @@ public class RentAdapter extends RecyclerView.Adapter<RentAdapter.RentViewHolder
     @Override
     public RentViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = inflater.inflate(R.layout.list_rent_item, parent, false);
-        toast = new Toast(parent.getContext());
         view.setOnClickListener(this::onRentClick);
         return new RentViewHolder(view);
     }
@@ -48,11 +48,18 @@ public class RentAdapter extends RecyclerView.Adapter<RentAdapter.RentViewHolder
         holder.transport.setText(rent.getTransport());
         holder.distance.setText(rent.getDistance());
         holder.time.setText(rent.getTime());
+        holder.id.setText(String.valueOf(rent.getId()));
     }
 
     public void onRentClick(View view){
-        toast.setText(((TextView)view.findViewById(R.id.rent_transport)).getText());
-        toast.show();
+        CharSequence transport = ((TextView) view.findViewById(R.id.rent_id)).getText();
+        RentView selected = rents.parallelStream()
+                .filter(r -> r.getId() == Long.parseLong(transport.toString()))
+                .findFirst()
+                .orElse(null);
+
+        assert selected != null;
+        rentActivity.showRoute(selected);
     }
 
     @Override
@@ -73,6 +80,8 @@ public class RentAdapter extends RecyclerView.Adapter<RentAdapter.RentViewHolder
 
         private final TextView time;
 
+        private final TextView id;
+
         public RentViewHolder(@NonNull View view) {
             super(view);
             date = view.findViewById(R.id.rent_date);
@@ -80,6 +89,7 @@ public class RentAdapter extends RecyclerView.Adapter<RentAdapter.RentViewHolder
             transport = view.findViewById(R.id.rent_transport);
             distance = view.findViewById(R.id.rent_distance);
             time = view.findViewById(R.id.rent_time);
+            id = view.findViewById(R.id.rent_id);
         }
     }
 }
