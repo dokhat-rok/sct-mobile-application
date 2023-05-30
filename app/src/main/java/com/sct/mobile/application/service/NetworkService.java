@@ -4,6 +4,7 @@ import com.sct.mobile.application.client.AuthApi;
 import com.sct.mobile.application.client.ParkingApi;
 import com.sct.mobile.application.client.PriceApi;
 import com.sct.mobile.application.client.RentApi;
+import com.sct.mobile.application.client.RoutePointApi;
 import com.sct.mobile.application.client.TransportApi;
 import com.sct.mobile.application.client.TripApi;
 import com.sct.mobile.application.client.UserApi;
@@ -83,7 +84,11 @@ public class NetworkService {
         return apiRetrofit.create(TripApi.class);
     }
 
-    public PriceApi getPriceApe() {
+    public PriceApi getPriceApi() {
         return apiRetrofit.create(PriceApi.class);
+    }
+
+    public RoutePointApi getRoutePointApi() {
+        return apiRetrofit.create(RoutePointApi.class);
     }
 }

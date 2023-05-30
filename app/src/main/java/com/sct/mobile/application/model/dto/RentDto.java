@@ -5,6 +5,7 @@ import com.google.gson.annotations.SerializedName;
 import com.sct.mobile.application.model.enums.RentStatus;
 
 import java.time.ZonedDateTime;
+import java.util.List;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -44,6 +45,10 @@ public class RentDto {
     @SerializedName("endParking")
     @Expose
     private ParkingDto endParking;
+
+    @SerializedName("routePoints")
+    @Expose
+    private List<RoutePointDto> routePoints;
 
     @SerializedName("status")
     @Expose

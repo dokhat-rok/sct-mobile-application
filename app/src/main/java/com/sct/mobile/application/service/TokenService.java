@@ -31,7 +31,9 @@ public class TokenService implements AuthSubscriber, Observed<TokenSubscriber> {
     }
 
     public static void setJwt(JwtDto jwtDto) {
-        jwtDto.setToken("Bearer " + jwtDto.getToken());
+        String token = "Bearer ";
+        if(jwtDto.getToken() != null) token += jwtDto.getToken();
+        jwtDto.setToken(token);
         jwt = jwtDto;
     }
 
@@ -44,9 +46,11 @@ public class TokenService implements AuthSubscriber, Observed<TokenSubscriber> {
     }
 
     @Override
-    public void acceptAuth(JwtDto token) {
-        token.setToken("Bearer " + token.getToken());
-        jwt = token;
+    public void acceptAuth(JwtDto jwtDto) {
+        String token = "Bearer ";
+        if(jwtDto.getToken() != null) token += jwtDto.getToken();
+        jwtDto.setToken(token);
+        jwt = jwtDto;
         subscriber.acceptToken();
     }
 

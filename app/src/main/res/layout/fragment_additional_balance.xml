@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="5pt"
+    android:layout_marginHorizontal="5pt"
+    android:background="@drawable/rounded_shape"
+    android:backgroundTint="@color/alternative_background_color"
+    android:orientation="vertical">
+
+    <ImageButton
+        android:id="@+id/additional_remove_button"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_gravity="center"
+        android:background="@color/alternative_background_color"
+        android:layout_weight="1"
+        android:layout_marginBottom="5pt"
+        android:src="@drawable/down_arrow" />
+
+    <TextView
+        android:id="@+id/textView123"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="#00FFFFFF"
+        android:text="ПОПОЛНЕНИЕ БАЛАНСА"
+        android:layout_marginBottom="5pt"
+        android:layout_marginHorizontal="5pt"
+        android:textColor="@color/text_color"
+        android:textSize="24sp"/>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/additional_amount"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginBottom="5pt"
+        android:layout_marginHorizontal="5pt"
+        android:layout_gravity="center">
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:hint="Сумма пополнения"
+        android:inputType="number"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <Button
+        android:id="@+id/additional_accept_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/background_button_color"
+        android:text="Пополнить баланс"
+        android:layout_marginHorizontal="5pt"
+        android:layout_marginBottom="15pt"
+        android:textAlignment="viewStart"
+        android:textColor="@color/text_button_color"/>
+
+</LinearLayout>

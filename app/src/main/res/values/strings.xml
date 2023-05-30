@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">sct-mobile-application</string>
+    <string name="app_name">IRent</string>
     <string name="action_settings">Settings</string>
     <string name="ApplicationName">IRent</string>
     <string name="login">Авторизация</string>
