@@ -51,6 +51,7 @@ import com.yandex.mapkit.MapKit;
 import com.yandex.mapkit.MapKitFactory;
 import com.yandex.mapkit.geometry.Geo;
 import com.yandex.mapkit.geometry.Point;
+import com.yandex.mapkit.location.Location;
 import com.yandex.mapkit.location.LocationManagerUtils;
 import com.yandex.mapkit.map.CameraPosition;
 import com.yandex.mapkit.map.MapObject;
@@ -88,6 +89,7 @@ public class MapActivity extends AppCompatActivity implements TransportSubscribe
     private static boolean isInitialize = false;
     private final float animTranslationYBy = 1500f;
     private final int animDuration = 1000;
+    private final double DISTANCE_TO_TRANSPORT = 50d;
 
     private final List<PlacemarkMapObject> bicycleList = new ArrayList<>();
     private final List<PlacemarkMapObject> scooterList = new ArrayList<>();
@@ -411,14 +413,14 @@ public class MapActivity extends AppCompatActivity implements TransportSubscribe
     };
 
     private void parkingEvent(ParkingDto parking) {
-        this.cameraFocus(parking.getCoordinates());
+        this.cameraFocus(parking.getCoordinates(), 18.0f);
         notification("Парковка: " + parking.getName());
     }
 
     private void transportEvent() {
         this.initSelectedLayout(selectedTransport);
         priceObserved.getPrice(selectedTransport.getType());
-        this.cameraFocus(selectedTransport.getCoordinates());
+        this.cameraFocus(selectedTransport.getCoordinates(), 18.0f);
     }
 
     private void initSelectedLayout(TransportDto transport) {
@@ -450,11 +452,11 @@ public class MapActivity extends AppCompatActivity implements TransportSubscribe
         mp.setLooping(true);
     }
 
-    private void cameraFocus(String coordinates) {
+    private void cameraFocus(String coordinates, float zoom) {
         String[] c = coordinates.split(",");
         Point point = new Point(Double.parseDouble(c[0]), Double.parseDouble(c[1]));
         mapView.getMap().move(
-                new CameraPosition(point, 18.0f, 0.0f, 0.0f),
+                new CameraPosition(point, zoom, 0.0f, 0.0f),
                 new Animation(Animation.Type.SMOOTH, 1.0f), null);
     }
 
@@ -520,12 +522,32 @@ public class MapActivity extends AppCompatActivity implements TransportSubscribe
                     .setDuration(animDuration);
     }
 
+    @SuppressLint("DefaultLocale")
     public void onBeginTripClick(View view) {
         if (selectedTransport == null) return;
         if (currentTripRent != null) {
             notification("У вас уже есть активная поездка");
             return;
         }
+
+        Location location = LocationManagerUtils.getLastKnownLocation();
+        double distance = -1;
+        if(location != null) {
+            distance = Geo.distance(
+                    location.getPosition(),
+                    this.getPointFromString(selectedTransport.getCoordinates()));
+        }
+        if(distance == -1) {
+            this.notification("Не удается определить местоположение");
+            return;
+        }
+        else if(distance > DISTANCE_TO_TRANSPORT) {
+            distance -= DISTANCE_TO_TRANSPORT;
+            this.notification(String.format("Подойдите ближе на %5.0f %s",
+                    distance, this.getMetreWord(distance)));
+            return;
+        }
+
         view.setClickable(false);
         tripObserved.beginTrip(TripBeginDto.builder()
                 .parkingId(selectedTransport.getParking().getId())
@@ -538,16 +560,16 @@ public class MapActivity extends AppCompatActivity implements TransportSubscribe
     }
 
     private void removeSelectLayout(boolean isStart) {
-        if(isStart) {
-            selectedLayout.removeAllViews();
-            selectedLayout = null;
-            selectedTransport = null;
-            selectedMapObject = null;
-            return;
+        this.cameraFocus(selectedTransport.getCoordinates(), 16.0f);
+        if(!isStart) {
+            if(selectedTransport.getType() == TransportType.BICYCLE)
+                bicycleList.add((PlacemarkMapObject) selectedMapObject);
+            else scooterList.add((PlacemarkMapObject) selectedMapObject);
         }
-        if(selectedTransport.getType() ==TransportType.BICYCLE)
-            bicycleList.add((PlacemarkMapObject) selectedMapObject);
-        else scooterList.add((PlacemarkMapObject) selectedMapObject);
+        selectedLayout.removeAllViews();
+        selectedLayout = null;
+        selectedTransport = null;
+        selectedMapObject = null;
     }
 
     public void onRemoveFilterClick(View view) {
@@ -558,17 +580,18 @@ public class MapActivity extends AppCompatActivity implements TransportSubscribe
     public void onEndTripClick(View view) {
 
         List<ParkingDto> parkingDistance = parking.stream()
-                .sorted(Comparator.comparing(p -> Geo.distance(this.getParkingPoint(p),
+                .sorted(Comparator.comparing(p -> Geo.distance(
+                        this.getPointFromString(p.getCoordinates()),
                         GeoStaticService.getCurrentPoint())))
                 .collect(Collectors.toList());
 
         ParkingDto nearP = parkingDistance.get(0);
-        double distance = Geo.distance(this.getParkingPoint(nearP),
+        double distance = Geo.distance(this.getPointFromString(nearP.getCoordinates()),
                 GeoStaticService.getCurrentPoint());
 
         if(distance > nearP.getAllowedRadius()) {
             this.notification(String
-                    .format("До ближайшей парковки %6.0f метров", distance));
+                    .format("До ближайшей парковки %6.0f %s", distance, this.getMetreWord(distance)));
             return;
         }
 
@@ -581,9 +604,18 @@ public class MapActivity extends AppCompatActivity implements TransportSubscribe
                 .build());
     }
 
-    private Point getParkingPoint(ParkingDto parking) {
-        String[] coordinates = parking.getCoordinates().split(",");
+    private Point getPointFromString(String c) {
+        String[] coordinates = c.split(",");
         return  new Point(Double.parseDouble(coordinates[0]),
                 Double.parseDouble(coordinates[1]));
+    }
+
+    private String getMetreWord(Double d) {
+        return switch ((int) (Math.round(d) % 10)) {
+            case 0, 5, 6, 7, 8, 9 -> "метров";
+            case 1 -> "метр";
+            case 2, 3, 4 -> "метра";
+            default -> "";
+        };
     }
 }

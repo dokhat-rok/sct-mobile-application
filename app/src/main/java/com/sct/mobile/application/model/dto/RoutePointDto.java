@@ -28,7 +28,7 @@ public class RoutePointDto {
     @Expose
     private Double longitude;
 
-    @SerializedName("created_date")
+    @SerializedName("createdDate")
     @Expose
-    private String created_date;
+    private String createdDate;
 }

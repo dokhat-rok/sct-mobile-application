@@ -46,8 +46,6 @@ public class RentAdapter extends RecyclerView.Adapter<RentAdapter.RentViewHolder
         holder.date.setText(rent.getDate());
         holder.amount.setText(rent.getAmount());
         holder.transport.setText(rent.getTransport());
-        holder.distance.setText(rent.getDistance());
-        holder.time.setText(rent.getTime());
         holder.id.setText(String.valueOf(rent.getId()));
     }
 
@@ -76,10 +74,6 @@ public class RentAdapter extends RecyclerView.Adapter<RentAdapter.RentViewHolder
 
         private final TextView transport;
 
-        private final TextView distance;
-
-        private final TextView time;
-
         private final TextView id;
 
         public RentViewHolder(@NonNull View view) {
@@ -87,8 +81,6 @@ public class RentAdapter extends RecyclerView.Adapter<RentAdapter.RentViewHolder
             date = view.findViewById(R.id.rent_date);
             amount = view.findViewById(R.id.rent_amount);
             transport = view.findViewById(R.id.rent_transport);
-            distance = view.findViewById(R.id.rent_distance);
-            time = view.findViewById(R.id.rent_time);
             id = view.findViewById(R.id.rent_id);
         }
     }
