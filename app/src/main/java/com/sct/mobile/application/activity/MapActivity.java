@@ -31,7 +31,6 @@ import com.sct.mobile.application.component.subscriber.PriceSubscriber;
 import com.sct.mobile.application.component.subscriber.RentSubscriber;
 import com.sct.mobile.application.component.subscriber.TransportSubscriber;
 import com.sct.mobile.application.component.subscriber.TripSubscriber;
-import com.sct.mobile.application.dialog.EndTripDialog;
 import com.sct.mobile.application.dialog.FinishDialog;
 import com.sct.mobile.application.fragment.CurrentTripFragment;
 import com.sct.mobile.application.fragment.FilterFragment;
@@ -46,11 +45,16 @@ import com.sct.mobile.application.model.dto.TripBeginDto;
 import com.sct.mobile.application.model.dto.TripEndDto;
 import com.sct.mobile.application.model.enums.RentStatus;
 import com.sct.mobile.application.model.enums.TransportType;
+import com.sct.mobile.application.service.GeoStaticService;
 import com.yandex.mapkit.Animation;
 import com.yandex.mapkit.MapKit;
 import com.yandex.mapkit.MapKitFactory;
+import com.yandex.mapkit.geometry.Geo;
 import com.yandex.mapkit.geometry.Point;
+import com.yandex.mapkit.location.Location;
+import com.yandex.mapkit.location.LocationManagerUtils;
 import com.yandex.mapkit.map.CameraPosition;
+import com.yandex.mapkit.map.MapObject;
 import com.yandex.mapkit.map.MapObjectCollection;
 import com.yandex.mapkit.map.MapObjectTapListener;
 import com.yandex.mapkit.map.PlacemarkMapObject;
@@ -61,10 +65,13 @@ import com.yandex.runtime.image.ImageProvider;
 import java.time.Duration;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.stream.Collectors;
 
 public class MapActivity extends AppCompatActivity implements TransportSubscriber, ParkingSubscriber, TripSubscriber, PriceSubscriber, RentSubscriber {
 
@@ -82,10 +89,12 @@ public class MapActivity extends AppCompatActivity implements TransportSubscribe
     private static boolean isInitialize = false;
     private final float animTranslationYBy = 1500f;
     private final int animDuration = 1000;
+    private final double DISTANCE_TO_TRANSPORT = 50d;
 
     private final List<PlacemarkMapObject> bicycleList = new ArrayList<>();
     private final List<PlacemarkMapObject> scooterList = new ArrayList<>();
     private final List<PlacemarkMapObject> parkingList = new ArrayList<>();
+    private List<ParkingDto> parking;
 
     private final TransportObservedImpl transportObserved = new TransportObservedImpl();
     private final ParkingObservedImpl parkingObserved = new ParkingObservedImpl();
@@ -94,11 +103,11 @@ public class MapActivity extends AppCompatActivity implements TransportSubscribe
     private final RentObservedImpl rentObserved = new RentObservedImpl();
 
     private TransportDto selectedTransport;
+    private MapObject selectedMapObject;
     private RentDto currentTripRent;
 
     private Timer getObjectsTimer;
     private Timer currentTripTimer;
-    private boolean makeEnd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -121,7 +130,9 @@ public class MapActivity extends AppCompatActivity implements TransportSubscribe
 
 
         mapView.getMap().move(
-                new CameraPosition(new Point(47.228713, 39.715841), 15.0f, 0.0f, 0.0f),
+                new CameraPosition(Objects.requireNonNull(LocationManagerUtils
+                                .getLastKnownLocation()).getPosition(),
+                        15.0f, 0.0f, 0.0f),
                 new Animation(Animation.Type.SMOOTH, 1.0f),
                 null);
         mapObjects = mapView.getMap().getMapObjects().addCollection();
@@ -151,8 +162,8 @@ public class MapActivity extends AppCompatActivity implements TransportSubscribe
     }
 
     public void updateParking() {
-        if (filterFragment.isParkingChecked()) parkingObserved.getAllParking();
-        else this.deleteMapObjects(parkingList);
+        if (!filterFragment.isParkingChecked()) this.deleteMapObjects(parkingList);
+        parkingObserved.getAllParking();
     }
 
     public void updateBicycle() {
@@ -193,9 +204,11 @@ public class MapActivity extends AppCompatActivity implements TransportSubscribe
     @Override
     public void acceptBeginTrip(RentDto rent) {
         currentTripRent = rent;
-        this.removeSelectLayout();
+        mapObjects.remove(selectedMapObject);
+        this.removeSelectLayout(true);
         this.initCurrentTripLayout();
         this.notification("Приятного пути!");
+        this.startGeo();
     }
 
     @Override
@@ -206,12 +219,12 @@ public class MapActivity extends AppCompatActivity implements TransportSubscribe
     @SuppressLint("CommitTransaction")
     @Override
     public void acceptEndTrip(RentDto rent) {
+        this.stopGeo();
         FinishDialog dialog = new FinishDialog(rent);
         FragmentManager manager = getSupportFragmentManager();
         manager.beginTransaction();
         dialog.show(manager, "finish");
 
-        this.makeEnd = false;
         this.currentTripTimer.cancel();
         currentTripLayout.removeAllViews();
         currentTripLayout = null;
@@ -245,7 +258,18 @@ public class MapActivity extends AppCompatActivity implements TransportSubscribe
     public void acceptGetAllRent(List<RentDto> rentList) {
         if (rentList.size() == 0) return;
         currentTripRent = rentList.get(0);
+        this.startGeo();
         this.initCurrentTripLayout();
+    }
+
+    private void startGeo() {
+        if(GeoStaticService.isStart()) return;
+        GeoStaticService.setCurrentRent(currentTripRent);
+        GeoStaticService.startSent();
+    }
+
+    private void stopGeo() {
+        GeoStaticService.stopSent();
     }
 
     @Override
@@ -301,6 +325,8 @@ public class MapActivity extends AppCompatActivity implements TransportSubscribe
     }
 
     private void populateParking(List<ParkingDto> parkingList) {
+        parking = parkingList;
+        if (!filterFragment.isParkingChecked()) return;
         this.deleteMapObjects(this.parkingList);
         parkingList.forEach(p -> this.populateMapObject(
                 this.parkingList,
@@ -334,13 +360,24 @@ public class MapActivity extends AppCompatActivity implements TransportSubscribe
     private void deleteMapObjects(List<PlacemarkMapObject> objects) {
         objects.stream()
                 .filter(this::notIsSelectedPlacemarkMapObject)
-                .forEach(o -> mapObjects.remove(o));
+                .forEach(o -> {
+                    try {
+                        mapObjects.remove(o);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                });
         objects.clear();
     }
 
     private boolean notIsSelectedPlacemarkMapObject(PlacemarkMapObject o) {
-        if (o.getUserData() instanceof TransportDto t) return this.notIsSelectedTransport(t);
-        return true;
+        try {
+            if (o.getUserData() instanceof TransportDto t) return this.notIsSelectedTransport(t);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return true;
+        }
     }
 
     private boolean notIsSelectedTransport(TransportDto t) {
@@ -368,6 +405,7 @@ public class MapActivity extends AppCompatActivity implements TransportSubscribe
             if (data instanceof ParkingDto) this.parkingEvent((ParkingDto) data);
             else if (data instanceof TransportDto) {
                 selectedTransport = (TransportDto) mapObject.getUserData();
+                this.selectedMapObject = mapObject;
                 this.transportEvent();
             }
         }
@@ -375,24 +413,14 @@ public class MapActivity extends AppCompatActivity implements TransportSubscribe
     };
 
     private void parkingEvent(ParkingDto parking) {
-        if (!makeEnd) {
-            this.cameraFocus(parking.getCoordinates());
-            notification("Парковка: " + parking.getName());
-            return;
-        }
-        notification("Завершаем поездку");
-        currentTripLayout.findViewById(R.id.current_end_button).setClickable(false);
-        tripObserved.endTrip(TripEndDto.builder()
-                .parkingId(parking.getId())
-                .rentId(currentTripRent.getId())
-                .transportId(currentTripRent.getTransport().getId())
-                .build());
+        this.cameraFocus(parking.getCoordinates(), 18.0f);
+        notification("Парковка: " + parking.getName());
     }
 
     private void transportEvent() {
         this.initSelectedLayout(selectedTransport);
         priceObserved.getPrice(selectedTransport.getType());
-        this.cameraFocus(selectedTransport.getCoordinates());
+        this.cameraFocus(selectedTransport.getCoordinates(), 18.0f);
     }
 
     private void initSelectedLayout(TransportDto transport) {
@@ -424,11 +452,11 @@ public class MapActivity extends AppCompatActivity implements TransportSubscribe
         mp.setLooping(true);
     }
 
-    private void cameraFocus(String coordinates) {
+    private void cameraFocus(String coordinates, float zoom) {
         String[] c = coordinates.split(",");
         Point point = new Point(Double.parseDouble(c[0]), Double.parseDouble(c[1]));
         mapView.getMap().move(
-                new CameraPosition(point, 18.0f, 0.0f, 0.0f),
+                new CameraPosition(point, zoom, 0.0f, 0.0f),
                 new Animation(Animation.Type.SMOOTH, 1.0f), null);
     }
 
@@ -494,12 +522,32 @@ public class MapActivity extends AppCompatActivity implements TransportSubscribe
                     .setDuration(animDuration);
     }
 
+    @SuppressLint("DefaultLocale")
     public void onBeginTripClick(View view) {
         if (selectedTransport == null) return;
         if (currentTripRent != null) {
             notification("У вас уже есть активная поездка");
             return;
         }
+
+        Location location = LocationManagerUtils.getLastKnownLocation();
+        double distance = -1;
+        if(location != null) {
+            distance = Geo.distance(
+                    location.getPosition(),
+                    this.getPointFromString(selectedTransport.getCoordinates()));
+        }
+        if(distance == -1) {
+            this.notification("Не удается определить местоположение");
+            return;
+        }
+        else if(distance > DISTANCE_TO_TRANSPORT) {
+            distance -= DISTANCE_TO_TRANSPORT;
+            this.notification(String.format("Подойдите ближе на %5.0f %s",
+                    distance, this.getMetreWord(distance)));
+            return;
+        }
+
         view.setClickable(false);
         tripObserved.beginTrip(TripBeginDto.builder()
                 .parkingId(selectedTransport.getParking().getId())
@@ -508,36 +556,66 @@ public class MapActivity extends AppCompatActivity implements TransportSubscribe
     }
 
     public void onRemoveSelectClick(View view) {
-        this.removeSelectLayout();
+        this.removeSelectLayout(false);
     }
 
-    private void removeSelectLayout() {
-        scooterList.forEach(p -> {
-            TransportDto t = (TransportDto) p.getUserData();
-            assert t != null;
-            if(t.getId().equals(selectedTransport.getId())) mapObjects.remove(p);
-        });
-        bicycleList.forEach(p -> {
-            TransportDto t = (TransportDto) p.getUserData();
-            assert t != null;
-            if(t.getId().equals(selectedTransport.getId())) mapObjects.remove(p);
-        });
+    private void removeSelectLayout(boolean isStart) {
+        this.cameraFocus(selectedTransport.getCoordinates(), 16.0f);
+        if(!isStart) {
+            if(selectedTransport.getType() == TransportType.BICYCLE)
+                bicycleList.add((PlacemarkMapObject) selectedMapObject);
+            else scooterList.add((PlacemarkMapObject) selectedMapObject);
+        }
         selectedLayout.removeAllViews();
         selectedLayout = null;
         selectedTransport = null;
+        selectedMapObject = null;
     }
 
     public void onRemoveFilterClick(View view) {
         filterLayout.animate().translationYBy(animTranslationYBy).setDuration(animDuration);
     }
 
-    @SuppressLint("CommitTransaction")
+    @SuppressLint("DefaultLocale")
     public void onEndTripClick(View view) {
-        makeEnd = true;
 
-        EndTripDialog dialog = new EndTripDialog();
-        FragmentManager manager = getSupportFragmentManager();
-        manager.beginTransaction();
-        dialog.show(manager, "end-trip");
+        List<ParkingDto> parkingDistance = parking.stream()
+                .sorted(Comparator.comparing(p -> Geo.distance(
+                        this.getPointFromString(p.getCoordinates()),
+                        GeoStaticService.getCurrentPoint())))
+                .collect(Collectors.toList());
+
+        ParkingDto nearP = parkingDistance.get(0);
+        double distance = Geo.distance(this.getPointFromString(nearP.getCoordinates()),
+                GeoStaticService.getCurrentPoint());
+
+        if(distance > nearP.getAllowedRadius()) {
+            this.notification(String
+                    .format("До ближайшей парковки %6.0f %s", distance, this.getMetreWord(distance)));
+            return;
+        }
+
+        notification("Завершаем поездку");
+        currentTripLayout.findViewById(R.id.current_end_button).setClickable(false);
+        tripObserved.endTrip(TripEndDto.builder()
+                .parkingId(nearP.getId())
+                .rentId(currentTripRent.getId())
+                .transportId(currentTripRent.getTransport().getId())
+                .build());
+    }
+
+    private Point getPointFromString(String c) {
+        String[] coordinates = c.split(",");
+        return  new Point(Double.parseDouble(coordinates[0]),
+                Double.parseDouble(coordinates[1]));
+    }
+
+    private String getMetreWord(Double d) {
+        return switch ((int) (Math.round(d) % 10)) {
+            case 0, 5, 6, 7, 8, 9 -> "метров";
+            case 1 -> "метр";
+            case 2, 3, 4 -> "метра";
+            default -> "";
+        };
     }
 }

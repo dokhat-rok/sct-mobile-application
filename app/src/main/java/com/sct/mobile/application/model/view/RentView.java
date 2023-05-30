@@ -1,5 +1,9 @@
 package com.sct.mobile.application.model.view;
 
+import com.sct.mobile.application.model.dto.RoutePointDto;
+
+import java.util.List;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -10,6 +14,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class RentView {
+
+    private Long id;
 
     private String date;
 

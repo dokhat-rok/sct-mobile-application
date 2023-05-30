@@ -10,13 +10,15 @@
 
     <color name="text_color">#f1faf4</color>
     <color name="background_color">#1a7e90</color>
+    <color name="alternative_background_color">#1F9BB1</color>
 <!--    <color name="text_button_color">#373D43</color>-->
     <color name="text_button_color">#f1faf4</color>
     <color name="background_button_color">#e74e38</color>
     <color name="second_background_button_color">#FF7043</color>
+    <color name="danger_background_button_color">#E73875</color>
     <color name="selected_text_color">#32cdcd</color>
 
     <!--switch color-->
     <color name="switch_true">@color/background_button_color</color>
-    <color name="switch_false">#E73875</color>
+    <color name="switch_false">@color/danger_background_button_color</color>
 </resources>

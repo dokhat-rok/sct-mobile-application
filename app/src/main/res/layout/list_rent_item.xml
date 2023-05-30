@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:padding="5pt"
-        android:background="#1F9BB1"
+        android:background="@color/alternative_background_color"
         tools:ignore="MissingConstraints">
 
         <LinearLayout
@@ -63,36 +63,20 @@
                 android:enabled="false"
                 android:text="Самокат ЭСМ-2"/>
 
-            <ImageView
-                android:layout_width="10pt"
-                android:layout_height="10pt"
-                android:src="@drawable/arrowright" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:clickable="false"
-            android:focusable="false"
-            android:layout_marginTop="5pt">
-
             <TextView
-                android:id="@+id/rent_distance"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@android:color/transparent"
-                android:textColor="@color/text_color"
-                android:textSize="18sp"
-                android:text="10 км"/>
-            <TextView
-                android:id="@+id/rent_time"
+                android:id="@+id/rent_id"
                 android:layout_marginStart="5pt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@android:color/transparent"
                 android:textColor="@color/text_color"
-                android:textSize="18sp"
-                android:text="00:34"/>
+                android:visibility="invisible"
+                android:textSize="18sp"/>
+
+            <ImageView
+                android:layout_width="10pt"
+                android:layout_height="10pt"
+                android:src="@drawable/arrowright" />
         </LinearLayout>
 
         <View
